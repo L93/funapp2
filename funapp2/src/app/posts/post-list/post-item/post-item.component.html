@@ -1,0 +1,20 @@
+post-item here!
+<span > {{ asyncPostItem }} </span>
+<div>
+
+    <mat-accordion multi = "true">
+        <mat-expansion-panel [routerLink] = "['/list', item.id]">
+          <mat-expansion-panel-header>
+              <p > {{ asyncPostItem.name  }} </p>
+              <p> {{ asyncPostItem | async }}</p>
+          </mat-expansion-panel-header>
+          <p> Test description {{ description }} </p>
+          <p> Test date created{{ created }} </p>
+          <p> Test rating {{ rating }} </p>
+    
+          <app-post-create></app-post-create>
+    
+        </mat-expansion-panel>
+    </mat-accordion>
+
+</div>
