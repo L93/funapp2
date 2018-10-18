@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/shared/data.service';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-post-create',
@@ -8,22 +9,29 @@ import { DataService } from 'src/app/shared/data.service';
 })
 export class PostCreateComponent implements OnInit {
 
+
+  name;
+  description;
+
   constructor(private data: DataService) { }
 
   ngOnInit() {
 
-  
+
   }
 
-  oncCick() {
+  onClick() {
 
       const clickData = {
-        name: 'testName',
-        description: 'testDescription',
-        created: 'testCreatedDate',
-        rating: 'testRating'
-      }
+        name: this.name,
+        description: this.description,
+        created: 'CreatedByUser',
+        rating: 'RatingByUser',
+      };
 
+    this.data.addPost(this.name, this.description);
+
+        console.log(this.name + ' ' + this.description);
   }
 
 }

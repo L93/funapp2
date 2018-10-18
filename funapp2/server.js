@@ -1,12 +1,12 @@
 const http = require('http'); // node.js import syntax
 const debug = require('debug')('node-angular')
-const app = require('/Users/BU-Admin/Desktop/funtime/funapp/backend/app');
+const app = require('/Users/junandrepaul/Desktop/Typescript/recorveredmean/funapp2/funapp2/backend/app.js');
 
 // const port =  process.env.PORT || 49157;
 // app.set('port', port ); // hey express, set port configuration to whavtev variable port represents
 // const server = http.createServer(app);
 //     // res.end('createServer() response test') // used to 'end writting to the response stream"
-// server.listen(port); 
+// server.listen(port);
 // // ^ This states, listen on either port 49156 or the default port host suggests
 
 
@@ -20,7 +20,7 @@ const normalizePort = val => {
     }
 
     if (port >= 0) {
-        //port number 
+        //port number
         return port;
     }
 
@@ -43,7 +43,7 @@ const onError = error => {
             process.exit(1);
             break;
             default:
-                throw error;    
+                throw error;
         }
 };
 
@@ -55,7 +55,8 @@ const onListening = () => {
 
 // port passed as string because .PORT on other side is typically a string.. streamlining expectations.
 // as method normalizePort shows above.
-const port = normalizePort(process.env.PORT || "49157"); 
+const port = normalizePort(process.env.PORT || "49175"); // loadint this alone for some reason retults to cannot Get// +
+// header error on this comp. Not sure it happened on zamor-imac.
 app.set("port", port);
 
 const server = http.createServer(app);

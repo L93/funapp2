@@ -1,20 +1,32 @@
-post-item here!
-<span > {{ asyncPostItem }} </span>
-<div>
+<!-- <span > {{ asyncPostItem | async }} </span> -->
+
+<br>
+<span > {{ asyncPostItemName | async }} </span>
+<br>
+<span > {{ asyncPostItemDescription | async }} </span>
+<br>
+<span > {{ asyncPostItemCreated | async }} </span>
+<br>
+<span > {{ asyncPostItemRating | async }} </span>
+<br>
+<br><hr>
+
+<!-- mat lib not playing well w/ async,look at this later. -->
+<!-- <div>
 
     <mat-accordion multi = "true">
         <mat-expansion-panel [routerLink] = "['/list', item.id]">
-          <mat-expansion-panel-header>
-              <p > {{ asyncPostItem.name  }} </p>
-              <p> {{ asyncPostItem | async }}</p>
+          <mat-expansion-panel-header *ngIf = "itemAvailabile" >
+              <p > {{ asyncPostItemName | async }} </p>
+               <p> {{ asyncPostItem.name | async }}</p>
           </mat-expansion-panel-header>
-          <p> Test description {{ description }} </p>
-          <p> Test date created{{ created }} </p>
-          <p> Test rating {{ rating }} </p>
-    
+          <p> Test description {{ asyncPostItem  | async }} </p> -->
+          <!-- <p> Test date created{{ asyncPostItemcreated | async }} </p>
+          <p> Test rating {{ asyncPostItemrating | async }} </p>
+
           <app-post-create></app-post-create>
-    
+
         </mat-expansion-panel>
     </mat-accordion>
 
-</div>
+</div> -->
