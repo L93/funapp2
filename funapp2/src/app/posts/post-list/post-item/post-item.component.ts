@@ -2,6 +2,8 @@
 
 import { Component, OnInit, Input } from '@angular/core';
 import { DataService } from 'src/app/shared/data.service';
+import { RouterModule, ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-post-item',
@@ -12,12 +14,14 @@ export class PostItemComponent implements OnInit {
 
 itemAvailable = false;
 finalItem: any;
+@Output() itemFelt = new EventEmitter <any> ();
 
   @Input() postItem: {
-  name: string;
-  description: string;
-  created: any;
-  rating;
+  id: string,
+  name: string,
+  description: string,
+  created: any,
+  rating: any,
 };
 
 delayedPostItem: {
@@ -27,6 +31,7 @@ delayedPostItem: {
   rating;
 };
 
+id;
 name;
 description;
 created;
@@ -37,6 +42,7 @@ rating;
 // template of being unforgiving.... gah!:
 
 asyncPostItem: Promise<any>;
+asyncPostItemId: Promise<any>;
 asyncPostItemName: Promise <any>;
 asyncPostItemDescription: Promise <any>;
 asyncPostItemCreated: Promise <any>;
@@ -47,6 +53,7 @@ asyncPostItemRating: Promise <any>;
 constructor(private data: DataService) {
   this.asyncPostItem = this.getPromise();
 
+  this.asyncPostItemId = this.getIdPromise();
   this.asyncPostItemName = this.getNamePromise();
   this.asyncPostItemDescription = this.getDescriptionPromise();
 
@@ -59,28 +66,24 @@ constructor(private data: DataService) {
     console.log(JSON.stringify(this.postItem));
 
     setTimeout( () => { // delay increases with every component... LEARN TO ASYNC!
-      const cleanedPost = JSON.stringify(this.postItem);
-      console.log(cleanedPost);
 
       this.delayedPostItem = this.postItem;
 
+      this.id = JSON.stringify(this.postItem.id);
+
       this.name = JSON.stringify(this.delayedPostItem.name);
-      console.log('name: ' + this.name);
 
-      this.description = JSON.stringify(this.delayedPostItem.description);
-      console.log('description: ' + this.description);
+      this.description = JSON.stringify(this.postItem.description);
 
-      this.created = JSON.stringify(this.delayedPostItem.created);
-      console.log('created: ' + this.created);
+      this.created = JSON.stringify(this.postItem.created);
 
-      this.rating = JSON.stringify(this.delayedPostItem.rating);
-      console.log('rating: ' + this.rating);
+      this.rating = JSON.stringify(this.postItem.rating);
 
-      this.finalItem = JSON.stringify(this.delayedPostItem);
+      this.finalItem = JSON.stringify(this.postItem);
 
 
       // wanaBTS; calling function saved under variable, use later.
-    }, 1000);
+    }, 0);
 
 
 // const wanaBTS = () => {          // <-- function saved under variable.
@@ -97,53 +100,56 @@ constructor(private data: DataService) {
 getPromise() {
 
   return new Promise((resolve, reject ) => {
-    console.log('getPromise() called');
-    
-    setTimeout(() => resolve (this.finalItem), 2000);
+    setTimeout(() => resolve (this.finalItem), 1000);
   });
 }
+
+getIdPromise() {
+
+  return new Promise ((resolve, reject) => {
+    setTimeout( () => resolve(this.id), 300);
+  });
+}
+
 
 getNamePromise() {
 
   return new Promise((resolve, reject ) => {
-    console.log('getNamePromise() called');
-    setTimeout(() => resolve (this.name), 2000);
+    setTimeout(() => resolve (this.name), 300);
   });
 }
 
 getDescriptionPromise() {
 
   return new Promise((resolve, reject ) => {
-    console.log('getDescriptionPromise() called');
-    setTimeout(() => resolve (this.description), 2000);
+    setTimeout(() => resolve (this.description), 300);
   });
 }
 
 getCreatedPromise() {
 
   return new Promise((resolve, reject ) => {
-    console.log('getCreatedPromise() called: ');
-    setTimeout(() => resolve (this.created), 2000);
+    setTimeout(() => resolve (this.created), 300);
   });
 }
 
 getRatingPromise() {
 
   return new Promise((resolve, reject ) => {
-    console.log('getCreatedPromise() called: ');
-    setTimeout(() => resolve (this.rating), 2000);
+    setTimeout(() => resolve (this.rating), 300);
   });
 }
-// end of boiler fuckery, fix this thing... 
+// end of boiler fuckery, fix this thing...
 
-onEdit(){
+onEdit() {
   console.log('onEdit() clicked');
+  // this.itemFelt.felt()
 }
 
-onDelete(postId: string){
-  console.log(postId);
-  this.data.onDelete(postId);
-  console.log('onDelete() clicked');
+onDelete() {
+  this.data.onDelete(this.postItem.id);
+  console.log('onDelete() clicked for: ' + this.id);
+  // setTimeout( () => {this.data.getPosts(); }, 200);
 }
 
 }

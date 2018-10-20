@@ -23,22 +23,22 @@ getPosts () {
   .pipe(map((postDataStream) => {
     return postDataStream.posts.map(post => {
       return {
+        id: post._id, // reassigning id value to backend's here.
         name: post.name,
         description: post.description,
         created: post.created,
         rating: post.rating,
-        id: post._id
-      }
-    })
+      };
+    });
   }))
   .subscribe( (transformedPosts) => {
         this.posts = transformedPosts;
-        this.postsUpdated.next([...this.posts]) 
+        this.postsUpdated.next([...this.posts]);
     // this.posts = JSON.stringify(postData); // .get method extracts and formats data for us from JSON > JS
      // ... = copy of x, prevents (accidental?) editing of posts.
-     console.log('justoutside Timeout (within async): ' + JSON.stringify(this.posts));
+     console.log('just after Timeout (within async): ' + (this.posts));
   });
-  console.log('justoutside Timeout (outside async): ' + this.posts);
+  console.log('just outside Timeout (outside async): ' + this.posts);
 }
 /*
 Max's example of pipe: // apply this logic to above getPost()
@@ -50,12 +50,12 @@ getPosts() {
   )
   .pipe(map((postData) => { <- rxjs autmaticly wraps postData into an observable thru in order for it to work
     ^  with subscribe. Since subscribe only woks with observables.
-    
+
     return postData.posts.map(post => {
       return {
         title: post.title,
         content: post.content,
-        id: post._id  <-- converting element array receiced from server into new & diff array, returning the obj to 
+        id: post._id  <-- converting element array receiced from server into new & diff array, returning the obj to
       }               ^ the encapsuling variable which maintains its observable quality w/ pipe that allows processing by
     })                ^ subscribe()
   }))
@@ -71,12 +71,19 @@ addPost(nameReceived: string, descriptionReceived: string) {
 
   const currentDate = new Date();
 
-  const post: PostInterface = {id: '', name: nameReceived, description: descriptionReceived,
+  const postToSend: PostInterface = {id: '', name: nameReceived, description: descriptionReceived,
   created: currentDate.toUTCString(), rating: 'Non yet!' };
-  
-  this.http.post<{message: any}>(this.postAPIURI, post).subscribe( (responseDataPost) => {
-    console.log('from server on succesful post: '+ responseDataPost.message);
-    this.posts.push(post);
+
+
+  // <-- IMPORTANT-->
+  // This updates local list while only requesting backend's
+  // id thru its res. Pushes to list array w/o calling
+  // getPost() which would go thru the lenghtly process
+  // of chatting w/ midware for backend query.
+  this.http.post<{message: any, postId: string}>(this.postAPIURI, postToSend).subscribe( (responseDataPost) => {
+    const id = responseDataPost.postId;
+    postToSend.id = id;
+    this.posts.push(postToSend);
     this.postsUpdated.next([...this.posts]);
   });
 
@@ -87,17 +94,28 @@ getPostUpdateListener() {
   return this.postsUpdated.asObservable();
 }
 
-onEdit(){
+onEdit() {
   // edit logic
 }
 
-onDelete(postId: string){
-  this.http.delete<{message: string, id: string}>(this.postAPIURI + postId)
-  .subscribe( () => { console.log('Deleted! - data.service')
+onDelete(postId: string) {
+  const postURIForDelete = this.postAPIURI + postId;
+  console.log('Id check from post-item: ' + postId);
+  console.log('URI for delete: ' + postURIForDelete);
+  this.http.delete<{message: string, id: string}>(postURIForDelete) // passed condensed to remove quotation marks.
+  .subscribe( () => {
+    const updatedPosts = this.posts.filter(post => post.id
+      !== postId);
+      // updates list locally by filtering out while back
+      // end deletes from its own array.
+      // moral of the story: update F.end & B.end lists seperaty.
+      // this makes the app feel fast.
+      this.posts = updatedPosts;
+      this.postsUpdated.next([...this.posts]);
     // console.log(deletedInfo.message);
     // console.log(deletedInfo.id);
   });      // string variables can be added to urls.. neat.
-};
+}
 
 
 }

@@ -2,8 +2,8 @@
 // const cors = require('cors');
 
 const mongoose = require('mongoose');
-// convention to capitalize models 
-const Post = require('/Users/BU-Admin/Desktop/funtime/funapp2/backend/models/post');
+// convention to capitalize models
+const Post = require('/Users/junandrepaul/Desktop/Typescript/recorveredmean/funapp2/funapp2/backend/models/post.js');
 const express = require('express');
 
 const bodyParser = require ('body-parser');
@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.setHeader("Access-Control-Allow-Metshods", "GET, POST, PATCH, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
      //OPTIONS implicitly sent to check for things like POST validity
      next();
 });
@@ -45,8 +45,8 @@ app.use((req, res, next) => {
 //  next();   // --> pass data down 2 next funnel
 // });
 
-app.post("/api/posts", (req, res, next) => { 
-  const post =  
+app.post("/api/posts", (req, res, next) => {
+  const post =
   new Post({
   id: req.body.id,
   name: req.body.name,
@@ -56,18 +56,20 @@ app.post("/api/posts", (req, res, next) => {
 
   });
 
-  post.save();
+  post.save().then(createdPost => {
 
   console.log('from back end w/ Post model: ' + post);
 
   res.status(201).json({
     message: 'Post successfully added',
+    postId: createdPost._id
   // return something since this is still an end point for incoming request..'req'.
   // return something to prevent timeout.
   });
 
   // res status 201 = everything is ok, a new resource was created.
-})
+});
+});
 
 app.get("/api/posts",(req, res, next) => {
 // can instead use app.get() here
@@ -76,7 +78,7 @@ app.get("/api/posts",(req, res, next) => {
         console.log(documents); // 'find doesnt really hold a promise but something similar to it -- huh? what is it?
         res.status(200).json({
           message: 'Posts fetched successfully!',
-            posts: documents 
+            posts: documents
           });
       });
   });
@@ -96,9 +98,11 @@ app.get("/api/posts",(req, res, next) => {
 // });
 
 app.delete("/api/posts/:id", (req, res, next) => { // :id example of "dynamic path segment"
-  console.log (req.params.id);
   id = req.params.id;
-  res.status(200).json({message: 'Post deleted!', id}); // <-- does res always need to be passed as a json obj?
+  Post.deleteOne({_id: id}).then(result => {
+    console.log(result);
+    res.status(200).json({message: 'Post deleted!', id}); // <-- does res always need to be passed as a json obj?
+  });
 });
 module.exports = app;   // exporting, like importing is diff than TS: module.export = <express variable>
 // ^^ wasted an hour because exports was missing an s... dont repeat!

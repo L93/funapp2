@@ -1,6 +1,6 @@
 const http = require('http'); // node.js import syntax
 const debug = require('debug')('node-angular')
-const app = require('/Users/BU-Admin/Desktop/funtime/funapp2/backend/app.js');
+const app = require('/Users/junandrepaul/Desktop/Typescript/recorveredmean/funapp2/funapp2/backend/app.js');
 
 // const port =  process.env.PORT || 49157;
 // app.set('port', port ); // hey express, set port configuration to whavtev variable port represents
