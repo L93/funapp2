@@ -92,11 +92,13 @@ constructor(private data: DataService) {
 
   }
 
+// Boiler plate GALORE:
+
 getPromise() {
 
   return new Promise((resolve, reject ) => {
     console.log('getPromise() called');
-    this.changeAvailability();
+    
     setTimeout(() => resolve (this.finalItem), 2000);
   });
 }
@@ -105,7 +107,6 @@ getNamePromise() {
 
   return new Promise((resolve, reject ) => {
     console.log('getNamePromise() called');
-    this.changeAvailability();
     setTimeout(() => resolve (this.name), 2000);
   });
 }
@@ -114,7 +115,6 @@ getDescriptionPromise() {
 
   return new Promise((resolve, reject ) => {
     console.log('getDescriptionPromise() called');
-    this.changeAvailability();
     setTimeout(() => resolve (this.description), 2000);
   });
 }
@@ -123,7 +123,6 @@ getCreatedPromise() {
 
   return new Promise((resolve, reject ) => {
     console.log('getCreatedPromise() called: ');
-    this.changeAvailability();
     setTimeout(() => resolve (this.created), 2000);
   });
 }
@@ -132,20 +131,19 @@ getRatingPromise() {
 
   return new Promise((resolve, reject ) => {
     console.log('getCreatedPromise() called: ');
-    this.changeAvailability();
     setTimeout(() => resolve (this.rating), 2000);
   });
 }
+// end of boiler fuckery, fix this thing... 
 
-
-
-changeAvailability() {
-  // this.itemAvailable = false;
-  // if (this.itemAvailable === false ) {
-  //   setTimeout( () => {
-
-  //     this.itemAvailable = true;
-  //   }, 3000);
-  // }
+onEdit(){
+  console.log('onEdit() clicked');
 }
+
+onDelete(postId: string){
+  console.log(postId);
+  this.data.onDelete(postId);
+  console.log('onDelete() clicked');
+}
+
 }

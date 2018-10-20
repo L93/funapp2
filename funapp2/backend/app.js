@@ -1,7 +1,9 @@
 // this file is to create apps
 // const cors = require('cors');
 
-
+const mongoose = require('mongoose');
+// convention to capitalize models 
+const Post = require('/Users/BU-Admin/Desktop/funtime/funapp2/backend/models/post');
 const express = require('express');
 
 const bodyParser = require ('body-parser');
@@ -9,6 +11,16 @@ const bodyParser = require ('body-parser');
 // "npm install --save body-parser"
 
 const app = express(); // express == chain of middle ware.. a "funnel" for data to go thru.
+
+// cluster jojoDesktop: o8RKGuFt4kQufFat
+// data is being saved in a "test" database as link indicates, can be overridden w/ a diff name which auto creates new db.
+mongoose.connect ('mongodb+srv://jojoDesktop:o8RKGuFt4kQufFat@cluster0-lmoyq.mongodb.net/test?retryWrites=true')
+.then ( () => {
+  console.log('Connected to DB!') }) // confirming connection
+.catch( () => {
+  console.log('connection failed') // catching error
+});
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -20,7 +32,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Metshods", "GET, POST, PATCH, DELETE, OPTIONS");
      //OPTIONS implicitly sent to check for things like POST validity
      next();
 });
@@ -33,47 +45,47 @@ app.use((req, res, next) => {
 //  next();   // --> pass data down 2 next funnel
 // });
 
-app.use("api/posts", (req, response, next) => { post = req.body;
-  console.log(post);
+app.post("/api/posts", (req, res, next) => { 
+  const post =  
+  new Post({
+  id: req.body.id,
+  name: req.body.name,
+  description: req.body.description,
+  created: req.body.created,
+  rating: req.body.rating
+
+  });
+
+  post.save();
+
+  console.log('from back end w/ Post model: ' + post);
+
   res.status(201).json({
-    message: 'Post successful added'
+    message: 'Post successfully added',
   // return something since this is still an end point for incoming request..'req'.
   // return something to prevent timeout.
-  })
+  });
 
   // res status 201 = everything is ok, a new resource was created.
 })
 
-app.use("/api/posts",(req, res, next) => {
+app.get("/api/posts",(req, res, next) => {
 // can instead use app.get() here
-    const posts = [
-        {
-            id: "8747834",
-            name: "box",
-            description: "cube",
-            created: "whatve time",
-            rating: "suks"
-
-          },
-
-          {
-            id: "8747999",
-            name: "box2",
-            description: "cube2",
-            created: "whatve time2",
-            rating: "suks2"
-          }
-
-    ]   ;
-        res.status(200).json({   // res status 200 = everything is ok
-            message: 'Posts fetched successfully!',
-            posts: posts
-        });
+      Post.find()
+      .then(documents => {
+        console.log(documents); // 'find doesnt really hold a promise but something similar to it -- huh? what is it?
+        res.status(200).json({
+          message: 'Posts fetched successfully!',
+            posts: documents 
+          });
+      });
+  });
+// max: "could use Post.find((err, documents) => {}); --a call back to retrieve data & manage errors-- but this can easily
+// lead to callback hell" ..need to read more on this.
+// res status 200 = everything is ok
 
         // --> pass data down 2 next funnel .. refered to .next() in app.use at that point
-        console.log(JSON.stringify(posts));
-        console.log('request came in!')
-   });
+
 
 
 // app.use((req, res, next) => {
@@ -83,6 +95,11 @@ app.use("/api/posts",(req, res, next) => {
 
 // });
 
+app.delete("/api/posts/:id", (req, res, next) => { // :id example of "dynamic path segment"
+  console.log (req.params.id);
+  id = req.params.id;
+  res.status(200).json({message: 'Post deleted!', id}); // <-- does res always need to be passed as a json obj?
+});
 module.exports = app;   // exporting, like importing is diff than TS: module.export = <express variable>
 // ^^ wasted an hour because exports was missing an s... dont repeat!
 
