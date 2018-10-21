@@ -1,21 +1,21 @@
-
-       <div class="row">
-         
-          <div class="col-sm-2 logo">
-        
-            <h1>Test subject</h1>
-
-        </div>
-
-        <div class="col-sm-5 search"> 
-                  <input  type="search" placeholder="" class ="searchbar">
-        </div>
-
-        <div class="col-sm-5 account"> insert account nav </div>
-      </div>
-
-
-<hr>
+<mat-toolbar color = "primary"> 
+<span>
+  <a routerLink = "/"> Testing Material  </a>
+</span>
+<span class = "spacer"></span>
+<ul class = "row">
+  <li a routerLink = "/home/posts/list" routerLinkActive = "mat-accent">posts</li>
+</ul>
+<ul class = "row">
+    <li a routerLink = "/home/disregardone" routerLinkActive = "">create two</li>
+  </ul>
+  <ul class = "row">
+      <li a routerLink = "/home/disregardtwo" routerLinkActive = "mat-accent">link3</li>
+    </ul>
+    <ul class = "row">
+        <li a routerLink = "/home/account" routerLinkActive = "">account</li>
+      </ul>
+</mat-toolbar>
 
 <router-outlet></router-outlet>
 

@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from 'src/app/shared/data.service';
+import { FormGroup, FormControl } from '@angular/forms';
+import { PostInterface } from 'src/app/shared/post.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-disregardone',
@@ -7,9 +11,35 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DisregardoneComponent implements OnInit {
 
-  constructor() { }
+  name;
+  description;
+
+  constructor(private data: DataService, public route: ActivatedRoute) { }
 
   ngOnInit() {
+
+
+  }
+
+  
+  onClick() {
+      
+      
+      const clickData: PostInterface = {
+        id: '',
+        name: this.name,
+        description: this.description,
+        created: 'CreatedByUser',
+        rating: 'RatingByUser',
+      };
+
+      console.log('create tab info: ' + JSON.stringify(clickData));
+    this.data.addPost(this.name, this.description);
+    // had getPost here() not idea as it requests a new list from back bend thru data with created posts.
+
+    console.log(this.name + ' ' + this.description);
+    this.name = '';
+    this.description = '';
   }
 
 }

@@ -1,11 +1,25 @@
-
-
 .searchform {
     width: 20%;
   }
   
   
-  .footer{
-      margin-bottom: 0px;
-      margin-top: auto;
+.footer{
+     margin-bottom: 0px;
+     margin-top: auto;
   }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 1.3%;
+  }
+
+  a {
+    text-decoration: none;
+    color: white;
+  }
+  
+  .spacer {
+    flex: 1 1 auto;
+  }
+  

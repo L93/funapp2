@@ -117,6 +117,29 @@ onDelete(postId: string) {
   });      // string variables can be added to urls.. neat.
 }
 
+updatePost(postId: string, updatedName: string, updatedDescription: string){
+  
+  const updatedInfo = { postId, updatedName, updatedDescription};
+  const postURIForUpdate = this.postAPIURI + postId;
+  this.http.put( postURIForUpdate, updatedInfo ).subscribe( (message) => {
+    console.log(message);}
+  )
+  console.log('id from postItem: ' + postId);
+
+
+
+    // return {...this.posts.find(posts => posts.id === id)};  // related to post edit, treturns post that matches id.
+}
+
+getPost(id: string){
+
+  console.log('id from postItem: ' + id);
+
+
+
+    // return {...this.posts.find(posts => posts.id === id)};  // related to post edit, treturns post that matches id.
+}
+
 
 }
 

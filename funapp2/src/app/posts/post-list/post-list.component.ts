@@ -22,7 +22,7 @@ export class PostListComponent implements OnInit {
     this.data.getPostUpdateListener()
     .subscribe((request: PostInterface[]) => {
       console.log('Asking for data from service: ');
-      this.posts = request.reverse();
+      this.posts = request;
       console.log(request);
       console.log(this.posts);
       // this.delayedPosts = this.posts;

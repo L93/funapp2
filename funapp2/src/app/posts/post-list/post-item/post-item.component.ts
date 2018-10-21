@@ -2,7 +2,8 @@
 
 import { Component, OnInit, Input } from '@angular/core';
 import { DataService } from 'src/app/shared/data.service';
-import { RouterModule, ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { RouterModule, ActivatedRoute,
+ActivatedRouteSnapshot, ParamMap } from '@angular/router';
 import { Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -36,6 +37,8 @@ name;
 description;
 created;
 rating;
+newName;
+newDescription;
 
 
 // Need individual promises for item objects items because
@@ -48,9 +51,10 @@ asyncPostItemDescription: Promise <any>;
 asyncPostItemCreated: Promise <any>;
 asyncPostItemRating: Promise <any>;
 // asyncPostItemId: Promise <any>;
+editAreaNeeded = false;
 
 
-constructor(private data: DataService) {
+constructor(private data: DataService, public route: ActivatedRoute) {
   this.asyncPostItem = this.getPromise();
 
   this.asyncPostItemId = this.getIdPromise();
@@ -58,10 +62,18 @@ constructor(private data: DataService) {
   this.asyncPostItemDescription = this.getDescriptionPromise();
 
   this.asyncPostItemCreated = this.getCreatedPromise();
-  this.asyncPostItemRating = this.getRatingPromise()
-;  }
+  this.asyncPostItemRating = this.getRatingPromise(); 
+}
 
   ngOnInit() {
+
+    this.route.paramMap.subscribe( (paramMap: ParamMap) => {
+      console.log(paramMap);
+      if (paramMap.has('postId')){
+        const postId = paramMap.get('postId');
+        console.log(postId);
+      }
+    })
 
     console.log(JSON.stringify(this.postItem));
 
@@ -142,8 +154,8 @@ getRatingPromise() {
 // end of boiler fuckery, fix this thing...
 
 onEdit() {
-  console.log('onEdit() clicked');
-  // this.itemFelt.felt()
+  this.editAreaNeeded = !this.editAreaNeeded;
+  
 }
 
 onDelete() {
@@ -151,5 +163,14 @@ onDelete() {
   console.log('onDelete() clicked for: ' + this.id);
   // setTimeout( () => {this.data.getPosts(); }, 200);
 }
+
+onSaveEdit(){
+  console.log('onSaveEdit() reached!');
+  console.log('onEdit() clicked, newName: ' + this.newName
+  + ' newDescription: ' + this.newDescription);
+  this.data.updatePost(this.postItem.id, this.newName, this.newDescription);
+  
+}
+
 
 }

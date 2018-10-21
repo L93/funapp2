@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/shared/data.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { PostInterface } from 'src/app/shared/post.model';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-post-create',
@@ -13,11 +14,27 @@ export class PostCreateComponent implements OnInit {
 
   name;
   description;
+  private mode = 'create';
+  postId: string;
+  private post;
 
-  constructor(private data: DataService) { }
+  constructor(private data: DataService, public route: ActivatedRoute) { }
 
   ngOnInit() {
-
+    this.route.paramMap.subscribe( (paramMap: ParamMap) => {
+      if (paramMap.has('postId')){
+        this.mode = 'edit';
+        this.postId = paramMap.get('postId');
+        this.post = this.data.getPost(this.postId);
+        console.log('post.Id being asked for: ' + this.postId);
+        console.log('post returned from service: ' + this.post);
+        console.log('route currently on: ' + this.route);
+      } else { 
+        this.mode = 'create';
+        this.postId = null;
+    };
+    }); // paramMap is an Angular obersavble, so no need to unsubscribe manually.
+    // working w/ obsevable to track url parameters because that could change at any time!
 
   }
 

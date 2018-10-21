@@ -23,12 +23,13 @@ const appRoutes : Routes = [
   
     {path: '', component: HeaderComponent, children: [
       {path: 'disregardone', component: DisregardoneComponent},
+      {path: 'disregardedit', component: DisregardoneComponent}, // for an ex
       {path: 'disregardtwo', component: DisregardtwoComponent},
       {path: 'account', component: AccountComponent},
       {path: 'page-not-found', component: PageNotFoundComponent},
       {path: 'posts', component: PostsComponent, children: [
         {path: 'list', component: PostListComponent, children: [
-          {path: '', component: PostItemComponent, children: [
+          {path: ':postId', component: PostItemComponent, children: [
             {path: '', component: PostCreateComponent}
           ]},
       ]},

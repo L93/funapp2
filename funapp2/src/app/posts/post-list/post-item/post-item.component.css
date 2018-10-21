@@ -1,0 +1,15 @@
+.buttons {
+    margin-right: 50px;
+    margin-left: auto;
+}
+.editArea {
+    align-content: center;
+    text-align: left;
+    justify-content: center;
+}
+
+.editInput {
+    display: inline-block;
+    width: 50%;
+    height: 30%;
+}

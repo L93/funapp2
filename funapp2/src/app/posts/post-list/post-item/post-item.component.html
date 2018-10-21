@@ -1,22 +1,40 @@
 <!-- <span > {{ asyncPostItem | async }} </span> -->
+<mat-accordion multi="true">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+
+            Model Name: {{ asyncPostItemName | async }}
+
+        </mat-expansion-panel-header>
+        <p>Model Description : {{ asyncPostItemDescription | async }}</p>
+        <p>Model Created : {{ asyncPostItemCreated | async }}</p>
+        <p>Model Rating : {{ asyncPostItemRating | async }} </p>
+        <p>Model ID: {{ asyncPostItemId | async }}</p>
+
+      
+        <mat-action-row>
+
+            <div class = "buttons">
+            <button class = "edits" mat-button color="primary" (click) = "onEdit()" >onEdit</button>
+            <button class = "edits" mat-button color="warn" (click) = "onDelete()" >onDelete</button>
+            </div>
+
+        </mat-action-row>
+
+        <mat-action-row class = "editArea" *ngIf = "editAreaNeeded">
+                <span>
+                        <input matInput placeholder="New Name" class = "editInput"[(ngModel)] = "newName">
+                        <input matInput placeholder="New Description" class = "editInput" [(ngModel)] = "newDescription">
+                        <button mat-button color ="default" (click) = "onSaveEdit()">onSave</button>
+                </span>
+        </mat-action-row>
+        
+        
+    </mat-expansion-panel>
+
+</mat-accordion>
 
 <br>
-<span > Model Name : {{ asyncPostItemName | async }} </span>
-<br>
-<span > Model Description : {{ asyncPostItemDescription | async }} </span>
-<br>
-<span > Model Created : {{ asyncPostItemCreated | async }} </span>
-<br>
-<span > Model Rating :{{ asyncPostItemRating | async }} </span>
-<br>
-<span>Model ID: {{ asyncPostItemId | async }} </span>
-<br>
-
-<div class="row">
-    <button class = "edits" (click) = "onEdit()">onEdit</button>
-    <button class = "edits" (click) = "onDelete()" >onDelete</button>
-</div>
-<br><hr>
 
 <!-- mat lib not playing well w/ async,look at this later. -->
 <!-- <div>
