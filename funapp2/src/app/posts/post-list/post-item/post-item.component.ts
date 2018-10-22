@@ -1,4 +1,4 @@
-// Prep for the MOTHER of ALL boilerplate codes.. holy!
+// Prep for the MOTHER of ALL boilerplate code.. holy!
 
 import { Component, OnInit, Input } from '@angular/core';
 import { DataService } from 'src/app/shared/data.service';
@@ -44,12 +44,12 @@ newDescription;
 // Need individual promises for item objects items because
 // template of being unforgiving.... gah!:
 
-asyncPostItem: Promise<any>;
-asyncPostItemId: Promise<any>;
-asyncPostItemName: Promise <any>;
-asyncPostItemDescription: Promise <any>;
-asyncPostItemCreated: Promise <any>;
-asyncPostItemRating: Promise <any>;
+asyncPostItem: any;        // async names should really be of type Promise<any> but redefined later
+asyncPostItemId: any;      // to be able to attach directly to live subscription of postItem under a f(x)
+asyncPostItemName: any;    // Boiler plates become an issue VERY quickly.. learn to add depth to classes
+asyncPostItemDescription: any; // functions!
+asyncPostItemCreated: any;
+asyncPostItemRating: any;
 // asyncPostItemId: Promise <any>;
 editAreaNeeded = false;
 
@@ -67,17 +67,18 @@ constructor(private data: DataService, public route: ActivatedRoute) {
 
   ngOnInit() {
 
-    this.route.paramMap.subscribe( (paramMap: ParamMap) => {
-      console.log(paramMap);
-      if (paramMap.has('postId')){
-        const postId = paramMap.get('postId');
-        console.log(postId);
-      }
-    })
 
+    // let following go as im working w/ imbedded components. ID being passed in ts instead:
+    // this.route.paramMap.subscribe( (paramMap: ParamMap) => {
+    //   console.log(paramMap);
+    //   if (paramMap.has('postId')){
+    //     const postId = paramMap.get('postId');
+    //     console.log('hi, post ID in param!');
+    //   }
+    // })
+
+    
     console.log(JSON.stringify(this.postItem));
-
-    setTimeout( () => { // delay increases with every component... LEARN TO ASYNC!
 
       this.delayedPostItem = this.postItem;
 
@@ -95,8 +96,6 @@ constructor(private data: DataService, public route: ActivatedRoute) {
 
 
       // wanaBTS; calling function saved under variable, use later.
-    }, 0);
-
 
 // const wanaBTS = () => {          // <-- function saved under variable.
 //   this.postItem.name = 'name';
@@ -168,7 +167,21 @@ onSaveEdit(){
   console.log('onSaveEdit() reached!');
   console.log('onEdit() clicked, newName: ' + this.newName
   + ' newDescription: ' + this.newDescription);
-  this.data.updatePost(this.postItem.id, this.newName, this.newDescription);
+  this.data.updatePost(this.postItem.id, this.newName, this.newDescription, 
+    this.postItem.created, this.postItem.rating);
+  console.log(this.postItem);
+  this.data.getPost(this.postItem.id).subscribe(updatedPost => {
+    this.postItem = {id: updatedPost._id, name: updatedPost.name, description: updatedPost.content,
+    created: updatedPost.created, rating: updatedPost.rating }; // upDatedPost.content should be desc. Fix!
+
+    this.asyncPostItem = updatedPost;     
+    this.asyncPostItemId = updatedPost._id;    
+    this.asyncPostItemName = updatedPost.name;
+    this.asyncPostItemDescription = updatedPost.content;
+    this.asyncPostItemCreated = updatedPost.created;
+    this.asyncPostItemRating = updatedPost.rating;
+    console.log('postItem after update: ' + this.postItem.id);
+  })
   
 }
 

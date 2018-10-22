@@ -1,0 +1,10 @@
+OCT 22/18 5:08pm -
+
+Goal: update post-item with edit button.
+Problems:
+-- In contacts with back end but posts not updating live. Updates reveal themselves only on refresh. Meaning DB is
+updating but not front end. Max is showing us how to have front end display live db info w/ this.
+He's choosing to do it w/ ngOnInit, I'm going w/ a f(x) triggered by the button f(x)
+-- Front end ID isnt meshing w/ DBs, which is expected but middleware isnt reassinging _id's value to id.
+could be the source to many of my headachs.. 
+-- + small issues you'll remember while trying to fix prior two.

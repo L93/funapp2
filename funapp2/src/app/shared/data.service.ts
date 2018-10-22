@@ -117,12 +117,26 @@ onDelete(postId: string) {
   });      // string variables can be added to urls.. neat.
 }
 
-updatePost(postId: string, updatedName: string, updatedDescription: string){
+updatePost(postId: string, updatedName: string, updatedDescription: string,
+  staticCreated: string, staticRating: string){
   
-  const updatedInfo = { postId, updatedName, updatedDescription};
+  const updatedInfo = { id: postId, name: updatedName, description: updatedDescription };
+  const updatedInfoWithStatic = { id: postId, name: updatedName, description: updatedDescription,
+  created: staticCreated, rating: staticRating }
   const postURIForUpdate = this.postAPIURI + postId;
-  this.http.put( postURIForUpdate, updatedInfo ).subscribe( (message) => {
-    console.log(message);}
+  this.http.put( postURIForUpdate, updatedInfoWithStatic ).subscribe( response => {
+  
+  // <--- "immutable way of updating old post" :
+    const updatedPosts = [...this.posts];
+    const oldPostIndex = updatedPosts.findIndex(p => p.id === updatedInfo.id);
+    updatedPosts[oldPostIndex] = {id: updatedInfo.id, name: updatedName, description: updatedDescription,
+    created: staticCreated, rating: staticRating};
+    console.log('Description : ' + updatedDescription )
+    this.posts = updatedPosts;
+    console.log(response);
+
+  // ---->
+  }
   )
   console.log('id from postItem: ' + postId);
 
@@ -131,12 +145,17 @@ updatePost(postId: string, updatedName: string, updatedDescription: string){
     // return {...this.posts.find(posts => posts.id === id)};  // related to post edit, treturns post that matches id.
 }
 
-getPost(id: string){
+needToIndex(id: string){
+  const copiedPosts = [...this.posts]
+  const foundItem = copiedPosts.findIndex(p => id === id);
+  console.log(foundItem);
+}
 
-  console.log('id from postItem: ' + id);
+getPost(postId: string){
 
-
-
+  return this.http.get<{_id: string, name: string, content: string,  created: string, rating: string, }>(this.postAPIURI + postId); 
+  // http is an observable, Angular wont accept is a sync dsts.
+  // instead, accept it with subscribe in outside component using the service.
     // return {...this.posts.find(posts => posts.id === id)};  // related to post edit, treturns post that matches id.
 }
 

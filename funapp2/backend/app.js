@@ -45,6 +45,7 @@ app.use((req, res, next) => {
 //  next();   // --> pass data down 2 next funnel
 // });
 
+// <<-- Post New Item -->>
 app.post("/api/posts", (req, res, next) => {
   const post =
   new Post({
@@ -71,6 +72,7 @@ app.post("/api/posts", (req, res, next) => {
 });
 });
 
+// <<-- Find & return ALL items in collection -->>
 app.get("/api/posts",(req, res, next) => {
 // can instead use app.get() here
       Post.find()
@@ -97,18 +99,37 @@ app.get("/api/posts",(req, res, next) => {
 
 // });
 
-app.put("/api/posts/:id", (req,res,next) => {
+// <<-- Modify item, find with ID -->>
+app.put("/api/posts/:id", (req,res,next) => { // could use app.patch here instead
   const post = new Post ({
     _id: req.body.id,
     name: req.body.name,
-    content: req.body.content
+    description: req.body.description,  // <-- assigning the correct variable names matters!
+    created: req.body.created,
+    rating: req.body.rating
   });
   Post.updateOne({_id: req.params.id}, post ).then(
-    result => { console.log(result)
+    result => { console.log(' datails of variable transfer ' + result);
+      console.log('data being received from front end');
       res.status(200).json({message: 'Update succesful!'});
+      console.log('bunch of shit just changed: ' + post)
     });
     }); 
 
+    // <<-- Find Post By id -->>
+app.get("/api/posts/:id", (req, res, next) => {
+Post.findById(req.params.id).then(post => { // using post model w/ find by ID method to query db.. 
+  if (post) { // max did say something about Post establishing a collection in db.. cant recall info.
+    res.status(200).json({post}) ;
+    console.log('params id :' + req.params.id);
+    console.log('Post being sent back is: ' + post);
+  } else {
+    res.status(404).json({message: 'Post not found'});
+  }
+}); 
+});
+
+// <<-- Delete Post -->>
 app.delete("/api/posts/:id", (req, res, next) => { // :id example of "dynamic path segment"
   id = req.params.id;
   Post.deleteOne({_id: id}).then(result => {
