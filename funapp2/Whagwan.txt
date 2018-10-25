@@ -8,3 +8,18 @@ He's choosing to do it w/ ngOnInit, I'm going w/ a f(x) triggered by the button 
 -- Front end ID isnt meshing w/ DBs, which is expected but middleware isnt reassinging _id's value to id.
 could be the source to many of my headachs.. 
 -- + small issues you'll remember while trying to fix prior two.
+
+Working thru problem:
+
+-- Looks like "find post by id" is being worked before "update post w/ id"
+
+Solution:
+
+Well, problem sort of resolved. Back-end is functioning well & returning expected variables.
+Front end is having issues w/ a split subscription between post-item & data service.
+Max continues the subscription for getPost f(x) inside his item component's ngOnInit.
+I'm choosing to do it under the onSaveEdit f(x) because variables holding displayed
+names hold asyncs that dont play well w/ onInit. Tried apply setTimeout between the trans 
+component observables w/o success. Can't put a finger on what the problem is exactly.
+Solution was to just update values w/ user input locally & send it to back end seperately
+w/o requiring confirmation to update view. We'd have to design. Review lecture 67 in mean course. 

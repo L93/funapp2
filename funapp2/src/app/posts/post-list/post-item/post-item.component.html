@@ -1,7 +1,10 @@
 <!-- <span > {{ asyncPostItem | async }} </span> -->
-<mat-accordion multi="true">
+<mat-progress-bar mode="determinate" value="40" *ngIf = "progressBar"></mat-progress-bar>
+<mat-spinner *ngIf = "progressBar" ></mat-spinner>
+<mat-accordion multi="true" *ngIf = "!progressBar">
     <mat-expansion-panel>
-        <mat-expansion-panel-header>
+            
+        <mat-expansion-panel-header >
 
             Model Name: {{ asyncPostItemName | async }}
 

@@ -13,3 +13,7 @@
     width: 50%;
     height: 30%;
 }
+
+mat-spinner{
+    margin: auto;
+}

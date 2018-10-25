@@ -7,6 +7,10 @@
 <input type="text" [(ngModel)] = "description" placeholder ="">
 
 <button (click) = "onClick()" > onclick </button>
+<div>
+    <button mat-stroked-button type = "button" (click) = "filePicker.click()">onPickImage</button>
+    <input type="file" #filePicker>
+</div>
 
 </div>
 

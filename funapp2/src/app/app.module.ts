@@ -18,13 +18,15 @@ import { DisregardoneComponent } from './disregardone/disregardone.component';
 import { DisregardtwoComponent } from './disregardtwo/disregardtwo.component';
 import { PostInterface } from 'src/app/shared/post.model';
 
+
 import { AppRoutingModule } from './shared/app-routing/app-routing.module';
 import { DataService } from 'src/app/shared/data.service';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule, MatCardModule,
           MatButtonModule, MatToolbarModule,
-          MatToolbar, MatExpansionModule } from '@angular/material';
+          MatToolbar, MatExpansionModule, MatProgressBarModule, 
+          MatProgressSpinnerModule} from '@angular/material';
 
 
 
@@ -55,6 +57,7 @@ import { MatInputModule, MatCardModule,
 
     BrowserAnimationsModule, MatInputModule, MatCardModule,
     MatButtonModule, MatToolbarModule, MatExpansionModule,
+    MatProgressBarModule, MatProgressSpinnerModule
   ],
   providers: [DataService],
   bootstrap: [AppComponent]

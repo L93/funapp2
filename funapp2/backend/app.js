@@ -108,18 +108,23 @@ app.put("/api/posts/:id", (req,res,next) => { // could use app.patch here instea
     created: req.body.created,
     rating: req.body.rating
   });
-  Post.updateOne({_id: req.params.id}, post ).then(
-    result => { console.log(' datails of variable transfer ' + result);
+  Post.updateOne({_id: req.body.id}, post ).then(
+    result => { 
+      console.log(' datails of variable transfer ' + result.id);
       console.log('data being received from front end');
-      res.status(200).json({message: 'Update succesful!'});
+      console.log( 'post: in updateOne: ' + post);
+      res.status(200).json({message: 'Update succesful! Body received: ' + 
+      req.body.id + req.body.name + ' ' + req.body.description});
       console.log('bunch of shit just changed: ' + post)
     });
     }); 
 
     // <<-- Find Post By id -->>
 app.get("/api/posts/:id", (req, res, next) => {
-Post.findById(req.params.id).then(post => { // using post model w/ find by ID method to query db.. 
-  if (post) { // max did say something about Post establishing a collection in db.. cant recall info.
+Post.findById(req.params.id).then(unrefinedPost => { // using post model w/ find by ID method to query db.. 
+  if (unrefinedPost) { // max did say something about Post establishing a collection in db.. cant recall info.
+    post = {id: unrefinedPost._id, name: unrefinedPost.name, description: unrefinedPost.description,
+    created: unrefinedPost.created, rating: unrefinedPost.rating}
     res.status(200).json({post}) ;
     console.log('params id :' + req.params.id);
     console.log('Post being sent back is: ' + post);

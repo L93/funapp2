@@ -15,6 +15,7 @@ export class PostItemComponent implements OnInit {
 
 itemAvailable = false;
 finalItem: any;
+newEdit: boolean;
 @Output() itemFelt = new EventEmitter <any> ();
 
   @Input() postItem: {
@@ -52,6 +53,7 @@ asyncPostItemCreated: any;
 asyncPostItemRating: any;
 // asyncPostItemId: Promise <any>;
 editAreaNeeded = false;
+progressBar = false;
 
 
 constructor(private data: DataService, public route: ActivatedRoute) {
@@ -77,14 +79,10 @@ constructor(private data: DataService, public route: ActivatedRoute) {
     //   }
     // })
 
-    
-    console.log(JSON.stringify(this.postItem));
-
-      this.delayedPostItem = this.postItem;
 
       this.id = JSON.stringify(this.postItem.id);
 
-      this.name = JSON.stringify(this.delayedPostItem.name);
+      this.name = JSON.stringify(this.postItem.name);
 
       this.description = JSON.stringify(this.postItem.description);
 
@@ -93,6 +91,8 @@ constructor(private data: DataService, public route: ActivatedRoute) {
       this.rating = JSON.stringify(this.postItem.rating);
 
       this.finalItem = JSON.stringify(this.postItem);
+
+
 
 
       // wanaBTS; calling function saved under variable, use later.
@@ -124,17 +124,28 @@ getIdPromise() {
 
 
 getNamePromise() {
-
+if (!this.newEdit){
   return new Promise((resolve, reject ) => {
     setTimeout(() => resolve (this.name), 300);
   });
+} else {
+  return new Promise((resolve, reject ) => {
+    setTimeout(() => resolve (this.newName), 300);
+  });
+}
 }
 
 getDescriptionPromise() {
 
-  return new Promise((resolve, reject ) => {
-    setTimeout(() => resolve (this.description), 300);
-  });
+  if (!this.newEdit){
+    return new Promise((resolve, reject ) => {
+      setTimeout(() => resolve (this.description), 300);
+    });
+  } else {
+    return new Promise((resolve, reject ) => {
+      setTimeout(() => resolve (this.newDescription), 300);
+    });
+  }
 }
 
 getCreatedPromise() {
@@ -164,26 +175,39 @@ onDelete() {
 }
 
 onSaveEdit(){
+
+  this.progressBar = this.data.changeProcessBar(true);
+
+  if (this.progressBar === true) {
+    console.log('hi, process bar set to true');
+  };
+
+  this.newEdit =  true;
   console.log('onSaveEdit() reached!');
   console.log('onEdit() clicked, newName: ' + this.newName
   + ' newDescription: ' + this.newDescription);
   this.data.updatePost(this.postItem.id, this.newName, this.newDescription, 
     this.postItem.created, this.postItem.rating);
+  console.log(' initial info sent to dataService : ');
   console.log(this.postItem);
-  this.data.getPost(this.postItem.id).subscribe(updatedPost => {
-    this.postItem = {id: updatedPost._id, name: updatedPost.name, description: updatedPost.content,
-    created: updatedPost.created, rating: updatedPost.rating }; // upDatedPost.content should be desc. Fix!
+  this.data.getPost(this.postItem.id) // upDatedPost.content should be desc. Fix!
+    
+    console.log('updatedpost after getPost()!: ');
 
-    this.asyncPostItem = updatedPost;     
-    this.asyncPostItemId = updatedPost._id;    
-    this.asyncPostItemName = updatedPost.name;
-    this.asyncPostItemDescription = updatedPost.content;
-    this.asyncPostItemCreated = updatedPost.created;
-    this.asyncPostItemRating = updatedPost.rating;
-    console.log('postItem after update: ' + this.postItem.id);
-  })
+    console.log('updatedPost.description : ');
+
+
+    // this.asyncPostItem = updatedPost;     
+    this.asyncPostItemId = this.getIdPromise();    
+    this.asyncPostItemName = this.getNamePromise();
+    this.asyncPostItemDescription = this.getDescriptionPromise();
+    this.asyncPostItemCreated = this.getCreatedPromise();
+    this.asyncPostItemRating = this.getRatingPromise();
+    // console.log('updatedPost.id after update: ' + updatedPost.id);
+
+    this.newEdit = false;
+    this.progressBar = this.data.changeProcessBar(false);
+  }
   
 }
 
-
-}

@@ -9,11 +9,22 @@ import { post } from 'selenium-webdriver/http';
 @Injectable({providedIn: 'root' }) // <-- ?? what is this
 export class DataService {
 private postAPIURI = 'http://localhost:49175/api/posts/';
+processBar: boolean;
 
   constructor (private http: HttpClient) { } // http lets you define your reqs types: post, get, etc
 
 private posts: PostInterface[];
 private postsUpdated = new Subject<PostInterface[]>(); // < -- to make little homies aware of new change to variable.
+
+changeProcessBar(valueToPass: boolean){
+  if (valueToPass === true) {
+    this.processBar = true;
+    return true;
+  } else {
+    this.processBar = false;
+    return false;
+  }
+}
 
 // data retreival from backend needs to be async.. takes time to transfer from backend.. set to 90ms here:
 getPosts () {
@@ -127,13 +138,16 @@ updatePost(postId: string, updatedName: string, updatedDescription: string,
   this.http.put( postURIForUpdate, updatedInfoWithStatic ).subscribe( response => {
   
   // <--- "immutable way of updating old post" :
-    const updatedPosts = [...this.posts];
+    // Really important that you study whats happening here
+    const updatedPosts = [...this.posts]; // <-- start update work w/ copied version
     const oldPostIndex = updatedPosts.findIndex(p => p.id === updatedInfo.id);
     updatedPosts[oldPostIndex] = {id: updatedInfo.id, name: updatedName, description: updatedDescription,
     created: staticCreated, rating: staticRating};
-    console.log('Description : ' + updatedDescription )
-    this.posts = updatedPosts;
+    console.log('Description : ' + updatedDescription );
+    this.posts = updatedPosts; // <-- finish by assigning copied to main list.
+    console.log('Response from backend: ')
     console.log(response);
+    console.log(this.posts)
 
   // ---->
   }
@@ -152,13 +166,21 @@ needToIndex(id: string){
 }
 
 getPost(postId: string){
+  console.log('id being received by getPost(): ' + postId);
+  let postItem; 
 
-  return this.http.get<{_id: string, name: string, content: string,  created: string, rating: string, }>(this.postAPIURI + postId); 
+  return this.http.get<{id: string, name: string, description: string,  created: string, rating: string, }>(this.postAPIURI + postId)
+  .subscribe(updatedPost => {
+
+    postItem = {id: updatedPost.id, name: updatedPost.name, description: updatedPost.description,
+    created: updatedPost.created, rating: updatedPost.rating };
+
+    return postItem;
   // http is an observable, Angular wont accept is a sync dsts.
   // instead, accept it with subscribe in outside component using the service.
     // return {...this.posts.find(posts => posts.id === id)};  // related to post edit, treturns post that matches id.
+});
 }
-
 
 }
 

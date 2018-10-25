@@ -12,12 +12,14 @@ export class PostListComponent implements OnInit {
 
   posts: PostInterface[] = [];
   private postsSub: Subscription;
+  isLoading = false;
 
   constructor(private data: DataService) {
 
   }
 
   ngOnInit() {
+    this.isLoading = true;
     this.data.getPosts();
     this.data.getPostUpdateListener()
     .subscribe((request: PostInterface[]) => {
@@ -32,7 +34,7 @@ export class PostListComponent implements OnInit {
 
       // console.log(this.postsSub); getting errors w/ subscribe.. compare against example later.
 
-
+  this.isLoading = false;
   }
 
   // ngOnDestroy(){ // not killing this causes a "memory leak"
