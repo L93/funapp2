@@ -17,11 +17,16 @@ export class PostCreateComponent implements OnInit {
   private mode = 'create';
   postId: string;
   private post;
+<<<<<<< HEAD
+=======
+  // <<-- NEW form input logic -->>
+>>>>>>> 60f80ecfd32aed74437da2084871d9f9ceab9595
   form: FormGroup;
 
   constructor(private data: DataService, public route: ActivatedRoute) { }
 
   ngOnInit() {
+<<<<<<< HEAD
     this.form = new FormGroup({
       'name' : new FormControl(null, {validators: [Validators.required, 
         Validators.minLength(3)]}),
@@ -31,6 +36,17 @@ export class PostCreateComponent implements OnInit {
         validators: [ Validators.required]
       })
     })
+=======
+    // <<-- new form logic -->>
+
+    this.form = new FormGroup({
+
+      'name': new FormControl(null, {validators: [Validators.required, Validators.minLength(3)] }),
+      'description': new FormControl(null, {validators: [Validators.required]})
+
+    });
+    // << -- end of new from logic -->>
+>>>>>>> 60f80ecfd32aed74437da2084871d9f9ceab9595
     this.route.paramMap.subscribe( (paramMap: ParamMap) => {
       if (paramMap.has('postId')){
         this.mode = 'edit';
@@ -39,7 +55,7 @@ export class PostCreateComponent implements OnInit {
         console.log('post.Id being asked for: ' + this.postId);
         console.log('post returned from service: ' + this.post);
         console.log('route currently on: ' + this.route);
-      } else { 
+      } else {
         this.mode = 'create';
         this.postId = null;
     };
