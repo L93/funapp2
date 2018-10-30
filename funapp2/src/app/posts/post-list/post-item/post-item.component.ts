@@ -165,6 +165,8 @@ getRatingPromise() {
 
 onEdit() {
   this.editAreaNeeded = !this.editAreaNeeded;
+  this.newName = this.postItem.name;
+  this.newDescription = this.postItem.description;
   
 }
 

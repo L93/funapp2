@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 // convention to capitalize models
 const Post = require('/Users/BU-Admin/Desktop/funtime/funapp2/backend/models/post.js');
 const express = require('express');
-
 const bodyParser = require ('body-parser');
 // A body parser needs to be added in order to process POST req.bodies:
 // "npm install --save body-parser"

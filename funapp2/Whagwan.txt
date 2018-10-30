@@ -23,3 +23,8 @@ names hold asyncs that dont play well w/ onInit. Tried apply setTimeout between 
 component observables w/o success. Can't put a finger on what the problem is exactly.
 Solution was to just update values w/ user input locally & send it to back end seperately
 w/o requiring confirmation to update view. We'd have to design. Review lecture 67 in mean course. 
+
+OCT 30/18 2:00PM - 
+
+Problems:
+-- Implement reactive form example shown by Max in post.item

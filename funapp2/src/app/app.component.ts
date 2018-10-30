@@ -14,12 +14,9 @@ constructor(private data: DataService){}
   approved: boolean
 
   ngOnInt() {
-    this.approved = false
   }
 
-  changeApproveStatus(newChange: boolean){
-    this.approved = newChange;   
-  }
+
 }
 
 

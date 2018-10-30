@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/shared/data.service';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PostInterface } from 'src/app/shared/post.model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
@@ -17,10 +17,20 @@ export class PostCreateComponent implements OnInit {
   private mode = 'create';
   postId: string;
   private post;
+  form: FormGroup;
 
   constructor(private data: DataService, public route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.form = new FormGroup({
+      'name' : new FormControl(null, {validators: [Validators.required, 
+        Validators.minLength(3)]}),
+
+      'description' : new FormControl(null, {
+         
+        validators: [ Validators.required]
+      })
+    })
     this.route.paramMap.subscribe( (paramMap: ParamMap) => {
       if (paramMap.has('postId')){
         this.mode = 'edit';
@@ -48,6 +58,7 @@ export class PostCreateComponent implements OnInit {
         rating: 'RatingByUser',
       };
 
+      console.log("ye, we're fnn working!")
     this.data.addPost(this.name, this.description);
     // had getPost here() not idea as it requests a new list from back bend thru data with created posts.
 
