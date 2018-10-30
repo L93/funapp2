@@ -17,3 +17,35 @@
 <br>
 <hr>
 
+<mat-card>
+
+  <form (submit) = "onclick()">
+    <mat-form-field>
+
+      <input matInput
+      type = "text"
+      required
+      minlength="3"
+      placeholder="Item Name">
+
+      <!-- <mat-error-field *ngIf="name.invalid"> Please Enter a Name </mat-error-field> -->
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <textarea
+        matInput
+        required
+        minlength="3"
+        placeholder="Item description"></textarea>
+        <!-- <mat-error-field *ngIf="descrition.invalid"> This item needs a description</mat-error-field> -->
+
+    </mat-form-field>
+    <br>
+    <button
+    mat-raised-button
+    color = "default"
+    type = "submit">Save Post</button>
+    </form>
+
+</mat-card>
+

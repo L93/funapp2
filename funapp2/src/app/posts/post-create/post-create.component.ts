@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/shared/data.service';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PostInterface } from 'src/app/shared/post.model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
@@ -17,10 +17,21 @@ export class PostCreateComponent implements OnInit {
   private mode = 'create';
   postId: string;
   private post;
+  // <<-- NEW form input logic -->>
+  form: FormGroup;
 
   constructor(private data: DataService, public route: ActivatedRoute) { }
 
   ngOnInit() {
+    // <<-- new form logic -->>
+
+    this.form = new FormGroup({
+
+      'name': new FormControl(null, {validators: [Validators.required, Validators.minLength(3)] }),
+      'description': new FormControl(null, {validators: [Validators.required]})
+
+    });
+    // << -- end of new from logic -->>
     this.route.paramMap.subscribe( (paramMap: ParamMap) => {
       if (paramMap.has('postId')){
         this.mode = 'edit';
@@ -29,7 +40,7 @@ export class PostCreateComponent implements OnInit {
         console.log('post.Id being asked for: ' + this.postId);
         console.log('post returned from service: ' + this.post);
         console.log('route currently on: ' + this.route);
-      } else { 
+      } else {
         this.mode = 'create';
         this.postId = null;
     };

@@ -3,7 +3,7 @@
 
 const mongoose = require('mongoose');
 // convention to capitalize models
-const Post = require('/Users/BU-Admin/Desktop/funtime/funapp2/backend/models/post.js');
+const Post = require('/Users/junandrepaul/Desktop/Typescript/recorveredmean/funapp2/funapp2/backend/models/post.js');
 const express = require('express');
 
 const bodyParser = require ('body-parser');
@@ -109,19 +109,19 @@ app.put("/api/posts/:id", (req,res,next) => { // could use app.patch here instea
     rating: req.body.rating
   });
   Post.updateOne({_id: req.body.id}, post ).then(
-    result => { 
+    result => {
       console.log(' datails of variable transfer ' + result.id);
       console.log('data being received from front end');
       console.log( 'post: in updateOne: ' + post);
-      res.status(200).json({message: 'Update succesful! Body received: ' + 
+      res.status(200).json({message: 'Update succesful! Body received: ' +
       req.body.id + req.body.name + ' ' + req.body.description});
       console.log('bunch of shit just changed: ' + post)
     });
-    }); 
+    });
 
     // <<-- Find Post By id -->>
 app.get("/api/posts/:id", (req, res, next) => {
-Post.findById(req.params.id).then(unrefinedPost => { // using post model w/ find by ID method to query db.. 
+Post.findById(req.params.id).then(unrefinedPost => { // using post model w/ find by ID method to query db..
   if (unrefinedPost) { // max did say something about Post establishing a collection in db.. cant recall info.
     post = {id: unrefinedPost._id, name: unrefinedPost.name, description: unrefinedPost.description,
     created: unrefinedPost.created, rating: unrefinedPost.rating}
@@ -131,7 +131,7 @@ Post.findById(req.params.id).then(unrefinedPost => { // using post model w/ find
   } else {
     res.status(404).json({message: 'Post not found'});
   }
-}); 
+});
 });
 
 // <<-- Delete Post -->>

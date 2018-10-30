@@ -2,7 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
-import  { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -25,7 +26,7 @@ import { DataService } from 'src/app/shared/data.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule, MatCardModule,
           MatButtonModule, MatToolbarModule,
-          MatToolbar, MatExpansionModule, MatProgressBarModule, 
+          MatToolbar, MatExpansionModule, MatProgressBarModule,
           MatProgressSpinnerModule} from '@angular/material';
 
 
@@ -46,14 +47,15 @@ import { MatInputModule, MatCardModule,
     DisregardtwoComponent,
   ],
   imports: [
-  
+
     FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     HttpClientModule,
     HttpModule,
     AppRoutingModule,
     BrowserModule,
-    
+
 
     BrowserAnimationsModule, MatInputModule, MatCardModule,
     MatButtonModule, MatToolbarModule, MatExpansionModule,
