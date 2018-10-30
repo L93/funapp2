@@ -134,6 +134,16 @@ Post.findById(req.params.id).then(unrefinedPost => { // using post model w/ find
 });
 });
 
+app.get("/randomrequests", (req, res, next) => 
+res.status(200).json(req.body))
+
+app.post("/randomrequests", (req, res, next) =>
+console.log(req.body).then(
+  res.status(200).json('received and now responding with original content: ' + req.body))
+
+ )
+
+
 // <<-- Delete Post -->>
 app.delete("/api/posts/:id", (req, res, next) => { // :id example of "dynamic path segment"
   id = req.params.id;
