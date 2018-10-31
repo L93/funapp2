@@ -1,3 +1,5 @@
+<!-- classical form & reactive form showcased below -->
+
 <p>App post create here!</p>
 <div class="form">
 
@@ -6,10 +8,10 @@
 <label>Description</label>
 <input type="text" [(ngModel)] = "description" placeholder ="">
 
-<button (click) = "onClick()" > onclick </button>
+<button (click) = "onClick(1)" > onclick </button>
 <div>
-    <button mat-stroked-button type = "button" (click) = "filePicker.click()">onPickImage</button>
-    <input type="file" #filePicker>
+    <button mat-stroked-button type = "button" (click) = "filePicker.click()">pickImageNL</button>
+    <input type="file" #filePicker (change) = "onImageUpload($event)">
 </div>
 
 </div>
@@ -19,32 +21,40 @@
 
 <mat-card>
 
-  <form (submit) = "onclick()">
+  <form [formGroup] = "form" (submit) = "onClick(2)">
     <mat-form-field>
 
       <input matInput
+      formControlName = "name"
       type = "text"
-      required
-      minlength="3"
       placeholder="Item Name">
 
-      <!-- <mat-error-field *ngIf="name.invalid"> Please Enter a Name </mat-error-field> -->
+      <mat-error *ngIf="form.get('name').invalid"> Please Enter a Name </mat-error>
       </mat-form-field>
       <br>
+
       <mat-form-field>
         <textarea
+        formControlName = "description"
         matInput
-        required
-        minlength="3"
         placeholder="Item description"></textarea>
-        <!-- <mat-error-field *ngIf="descrition.invalid"> This item needs a description</mat-error-field> -->
+
+        <mat-error *ngIf="form.get('description').invalid"> This item needs a description</mat-error>
 
     </mat-form-field>
     <br>
+    <button mat-stroked-button type = "button" (click) = "filePicker2.click()"> pickImageNL </button>
+
     <button
     mat-raised-button
     color = "default"
     type = "submit">Save Post</button>
+    <input type= "file" #filePicker2 (change) = "onImageUpload($event)">
+
+    <div class="image-preview" *ngIf = "imagePreview !== '' && imagePreview !== null">
+    <!-- no different than typing *ngIf="imagePreview" in place of 2nd (null)-->
+      <img [src]="imagePreview" [alt] = "form.value.name">
+    </div>
     </form>
 
 </mat-card>

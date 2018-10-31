@@ -3,7 +3,7 @@
 <mat-spinner *ngIf = "progressBar" ></mat-spinner>
 <mat-accordion multi="true" *ngIf = "!progressBar">
     <mat-expansion-panel>
-            
+
         <mat-expansion-panel-header >
 
             Model Name: {{ asyncPostItemName | async }}
@@ -14,7 +14,7 @@
         <p>Model Rating : {{ asyncPostItemRating | async }} </p>
         <p>Model ID: {{ asyncPostItemId | async }}</p>
 
-      
+
         <mat-action-row>
 
             <div class = "buttons">
@@ -28,11 +28,11 @@
                 <span>
                         <input matInput placeholder="New Name" class = "editInput"[(ngModel)] = "newName">
                         <input matInput placeholder="New Description" class = "editInput" [(ngModel)] = "newDescription">
-                        <button mat-button color ="default" (click) = "onSaveEdit()">onSave</button>
+                        <button mat-button color ="default" (click) = "onSaveEdit()">onSaveEdit</button>
                 </span>
         </mat-action-row>
-        
-        
+
+
     </mat-expansion-panel>
 
 </mat-accordion>

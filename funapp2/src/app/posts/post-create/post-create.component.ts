@@ -19,6 +19,7 @@ export class PostCreateComponent implements OnInit {
   private post;
   // <<-- NEW form input logic -->>
   form: FormGroup;
+  imagePreview: string;
 
   constructor(private data: DataService, public route: ActivatedRoute) { }
 
@@ -28,12 +29,17 @@ export class PostCreateComponent implements OnInit {
     this.form = new FormGroup({
 
       'name': new FormControl(null, {validators: [Validators.required, Validators.minLength(3)] }),
-      'description': new FormControl(null, {validators: [Validators.required]})
+
+      'description': new FormControl(null, {validators: [Validators.required]}),
+
+      'image' : new FormControl(null, {validators: [Validators.required]})
 
     });
+
+
     // << -- end of new from logic -->>
     this.route.paramMap.subscribe( (paramMap: ParamMap) => {
-      if (paramMap.has('postId')){
+      if (paramMap.has('postId')) {
         this.mode = 'edit';
         this.postId = paramMap.get('postId');
         this.post = this.data.getPost(this.postId);
@@ -49,22 +55,37 @@ export class PostCreateComponent implements OnInit {
 
   }
 
-  onClick() {
+  onClick(whichForm: number) {
 
-      const clickData: PostInterface = {
-        id: '',
-        name: this.name,
-        description: this.description,
-        created: 'CreatedByUser',
-        rating: 'RatingByUser',
-      };
+  if (whichForm === 1) {
 
-    this.data.addPost(this.name, this.description);
-    // had getPost here() not idea as it requests a new list from back bend thru data with created posts.
+      this.data.addPost(this.name, this.description);
+      // had getPost here() not idea as it requests a new list from back bend thru data with created posts.
 
-    console.log(this.name + ' ' + this.description);
-    this.name = '';
-    this.description = '';
+      console.log(this.name + ' ' + this.description);
+      this.name = '';
+      this.description = '';
+  } else if (whichForm === 2 ) {
+
+    this.data.addPost(this.form.value.name, this.form.value.description);
+  }
+
+
+  }
+
+  onImageUpload(event: Event) { //            Event is native to angular, no need to import.
+    const file = (event.target as HTMLInputElement).files[0];
+
+    this.form.patchValue({image: file});
+    this.form.get('image').updateValueAndValidity();
+    console.log(file);
+    console.log(this.form);
+
+    const reader = new FileReader;
+    reader.onload = () => {
+      this.imagePreview = reader.result;
+    };
+    reader.readAsDataURL(file);
   }
 
 }

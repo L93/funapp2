@@ -1,0 +1,72 @@
+October 31/18 Notes:
+
+
+Reactive Form:
+
+-- Max switches to reactive approach because it allows more "advanced features", he's able to make his own validators
+--> Form is now created "programaticly" meaning starting by declaring the form variable "form: formGroup;". formGroup group's all of the controls in a form, you can also have sub groups.
+--> initialize "form" under ngOnInit()-- or wherever appropriate for use case -- "this.form = new FormGroup({ "args" })".
+--> ex of initialization:
+
+this.form = new FormGroup({
+  'title': new FormControl(null, {validators:[
+  Validators.required, Validators.minLeanght(3)]})
+  'content' = "" ^
+});
+
+-- to prepopulated a field w/ existing data use form.setValue(), ex:
+
+this.form.setValue({
+  'title' = this.post.title,
+  'content' = this.post.content
+})
+-- to reset for w/ reactive method: this.form.reset()
+
+-- Linking HTML to component:
+<form [formGroup] = "form" (submit) = "onSavePost">
+<input type = "text" formControlName = "title">
+// not wrapped in squeare brackets because we're just passing a string. (? title is a var like form)
+//getting invalid status for above input:
+<span *ngIf = "form.get('title').invalid> sumnt </span>
+
+-- .setValue() allows you "to set values of ALL inputs/controls of your form"
+-- .patchValue is a more targeted approach, allowing for single variable value changes. (huh.. so {} is a requirement for .setValue()'s arg, makes sense )
+
+-- reactive forms (unlike basic html forms? Max seems to impply this) accept both text & file inputs.
+
+Uploading Image:
+
+-- Connecting & passing data of input type = "file" to back end function:
+--> HTML : <input type = "file" (change) = "onNewFileUploaded($event)>
+--> TS : onNewFileUploaded(event: Event){
+  const file = (event.target as HTMLInputElement).files[0];
+  this.form.patchValue({image: file});
+  this.form.get('image').updateValueAndValidity;
+  // need to tell TS that event.target is an htmlInputElment to avoid erros.
+  // .files is an array, it's first array position being the file uploaded.
+  // .updateValueAndValidity tells angular to check for new image value & to rerun validiy check.
+}
+
+-- Defining preview:
+
+// first declare a proper for the image:
+
+imagePreview: string;
+
+onImageUpload () {
+
+  -- noise --
+
+  const reader = new FileReader;
+  reader.onload = () => {
+    this.imagePreview = reader.result;
+  }
+
+  reader.readAsDataURL(file);
+
+  // reader.onload is a callback. Looks like it's waiting for reader.readAsDataURL to finish reading the uploaded file (& convert to URL?). once reader.onload senses .readAsDataURL is complete it allows it assigns the url (string) value to this.imagePreview using reader.result.
+}
+
+mime-type validator:
+
+-- Mime-type validator

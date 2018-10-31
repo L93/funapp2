@@ -11,14 +11,14 @@ constructor(private data: DataService){}
 
   title = 'funapp';
 
-  approved: boolean
+  approved: boolean;
 
   ngOnInt() {
-    this.approved = false
+    this.approved = true;
   }
 
   changeApproveStatus(newChange: boolean){
-    this.approved = newChange;   
+    this.approved = newChange;
   }
 }
 

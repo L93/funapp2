@@ -12,6 +12,10 @@ const bodyParser = require ('body-parser');
 
 const app = express(); // express == chain of middle ware.. a "funnel" for data to go thru.
 
+
+// Terminal to connect to cloud db:
+//  Junandres-MacBook-Pro:funapp2 junandrepaul$ mongo "mongodb+srv://cluster0-lmoyq.mongodb.net/test" --username jojoDesktop
+
 // cluster jojoDesktop: o8RKGuFt4kQufFat
 // data is being saved in a "test" database as link indicates, can be overridden w/ a diff name which auto creates new db.
 mongoose.connect ('mongodb+srv://jojoDesktop:o8RKGuFt4kQufFat@cluster0-lmoyq.mongodb.net/test?retryWrites=true')
@@ -134,7 +138,7 @@ Post.findById(req.params.id).then(unrefinedPost => { // using post model w/ find
 });
 });
 
-app.get("/randomrequests", (req, res, next) => 
+app.get("/randomrequests", (req, res, next) =>
 res.status(200).json(req.body))
 
 app.post("/randomrequests", (req, res, next) =>
