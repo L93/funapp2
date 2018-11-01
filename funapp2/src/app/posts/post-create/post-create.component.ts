@@ -3,6 +3,7 @@ import { DataService } from 'src/app/shared/data.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PostInterface } from 'src/app/shared/post.model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { mimeType } from 'src/app/posts/post-create/mime-type.validator';
 
 @Component({
   selector: 'app-post-create',
@@ -31,7 +32,9 @@ export class PostCreateComponent implements OnInit {
 
       'description': new FormControl(null, {validators: [Validators.required]}),
 
-      'image' : new FormControl(null, {validators: [Validators.required]})
+      'image' : new FormControl(null, {validators: [Validators.required], asyncValidators: [mimeType]})
+      // angular differentiates beween sync & async validators
+      // mimeType validator only takes png/jpg/jpeg.
 
     });
 
@@ -48,7 +51,7 @@ export class PostCreateComponent implements OnInit {
       } else {
         this.mode = 'create';
         this.postId = null;
-    };
+    }
     }); // paramMap is an Angular obersavble, so no need to unsubscribe manually.
     // working w/ obsevable to track url parameters because that could change at any time!
 
@@ -56,18 +59,23 @@ export class PostCreateComponent implements OnInit {
 
   onClick(whichForm: number) {
 
-  if (whichForm === 1) {
+    if (this.form.invalid) {
+      console.log('Form is invalid human, try harder.');
+      return;
+    }
 
-      this.data.addPost(this.name, this.description);
-      // had getPost here() not idea as it requests a new list from back bend thru data with created posts.
+    if (whichForm === 1) {
 
-      console.log(this.name + ' ' + this.description);
-      this.name = '';
-      this.description = '';
-  } else if (whichForm === 2 ) {
+        this.data.addPost(this.name, this.description);
+        // had getPost here() not idea as it requests a new list from back bend thru data with created posts.
 
-    this.data.addPost(this.form.value.name, this.form.value.description);
-  }
+        console.log(this.name + ' ' + this.description);
+        this.name = '';
+        this.description = '';
+    } else if (whichForm === 2 ) {
+
+      this.data.addPost(this.form.value.name, this.form.value.description);
+    }
 
 
   }

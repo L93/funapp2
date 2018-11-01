@@ -6,7 +6,7 @@ Problems:
 updating but not front end. Max is showing us how to have front end display live db info w/ this.
 He's choosing to do it w/ ngOnInit, I'm going w/ a f(x) triggered by the button f(x)
 -- Front end ID isnt meshing w/ DBs, which is expected but middleware isnt reassinging _id's value to id.
-could be the source to many of my headachs.. 
+could be the source to many of my headachs..
 -- + small issues you'll remember while trying to fix prior two.
 
 Working thru problem:
@@ -19,12 +19,23 @@ Well, problem sort of resolved. Back-end is functioning well & returning expecte
 Front end is having issues w/ a split subscription between post-item & data service.
 Max continues the subscription for getPost f(x) inside his item component's ngOnInit.
 I'm choosing to do it under the onSaveEdit f(x) because variables holding displayed
-names hold asyncs that dont play well w/ onInit. Tried apply setTimeout between the trans 
+names hold asyncs that dont play well w/ onInit. Tried apply setTimeout between the trans
 component observables w/o success. Can't put a finger on what the problem is exactly.
 Solution was to just update values w/ user input locally & send it to back end seperately
-w/o requiring confirmation to update view. We'd have to design. Review lecture 67 in mean course. 
+w/o requiring confirmation to update view. We'd have to design. Review lecture 67 in mean course.
 
-OCT 30/18 2:00PM - 
+OCT 30/18 2:00PM -
 
 Problems:
 -- Implement reactive form example shown by Max in post.item
+
+Solution:
+-- Done.
+
+OCT 31/18 11:57PM -
+
+Problems:
+-- Expand knowledge on custom observables & form validators.
+-- mimeType validator not returning positive isValid when it should, dig for bug.
+-- Study, everything inside mime-type.validator.ts.
+

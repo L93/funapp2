@@ -34,6 +34,18 @@ this.form.setValue({
 
 -- reactive forms (unlike basic html forms? Max seems to impply this) accept both text & file inputs.
 
+-- Promise <{[key: string]: any}>
+Above tells angular not care about name, just needs a property that can be interpreted as a string. Square brackets indicate a "dynamic property name".. not an array. "any" means the value of said property can be anything.
+
+-- Rxjs's Observer is a tool to control when observable assigned to it emits new data.
+
+-- Difference between onload && onloadend is the latter holds more data about the target file.
+
+-- Uint8Array: "Array of 8bit -unsigned(onside??)- integers.
+It's "a way to access/read certain patterns in the file & its metadata to be able to parse the mime type.
+Dont just want to check the extension, you want to 'infer' the file type while looking into the file"
+--> Says this is something that rarely needs to be done on our own, whatev, need to read the docs.
+
 Uploading Image:
 
 -- Connecting & passing data of input type = "file" to back end function:
@@ -67,6 +79,12 @@ onImageUpload () {
   // reader.onload is a callback. Looks like it's waiting for reader.readAsDataURL to finish reading the uploaded file (& convert to URL?). once reader.onload senses .readAsDataURL is complete it allows it assigns the url (string) value to this.imagePreview using reader.result.
 }
 
-mime-type validator:
+mime-type validator (custom validator):
 
--- Mime-type validator
+
+-- ALL validators are functions which "read in controlled value & return the information whether (if valid?) it's valid or not"
+
+-- normal sync validator return a JS object that either holds a key:value pair if returning an error (errorcode: errorvalue) OR null. Null == successful validation.
+
+-- async is similar with the only excepetion being an async return type (Observable/Promise)
+
