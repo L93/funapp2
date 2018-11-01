@@ -37,5 +37,6 @@ OCT 31/18 11:57PM -
 Problems:
 -- Expand knowledge on custom observables & form validators.
 -- mimeType validator not returning positive isValid when it should, dig for bug.
+--> delete form.get('image').valid in *ngIf for hint.
 -- Study, everything inside mime-type.validator.ts.
 
