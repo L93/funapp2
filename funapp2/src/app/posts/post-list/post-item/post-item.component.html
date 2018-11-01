@@ -26,7 +26,7 @@
 
         <mat-action-row class = "editArea" *ngIf = "editAreaNeeded">
                 <span>
-                        <input matInput placeholder="New Name" class = "editInput"[(ngModel)] = "newName">
+                        <input matInput placeholder="New Name" class = "editInput" [(ngModel)] = "newName">
                         <input matInput placeholder="New Description" class = "editInput" [(ngModel)] = "newDescription">
                         <button mat-button color ="default" (click) = "onSaveEdit()">onSaveEdit</button>
                 </span>

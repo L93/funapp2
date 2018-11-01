@@ -10,6 +10,7 @@ import { post } from 'selenium-webdriver/http';
 export class DataService {
 private postAPIURI = 'http://localhost:49175/api/posts/';
 processBar: boolean;
+approvedToLoad: boolean;
 
   constructor (private http: HttpClient) { } // http lets you define your reqs types: post, get, etc
 
@@ -180,6 +181,11 @@ getPost(postId: string){
   // instead, accept it with subscribe in outside component using the service.
     // return {...this.posts.find(posts => posts.id === id)};  // related to post edit, treturns post that matches id.
 });
+}
+
+changeApprovedToLoad(newValue: boolean) {
+   
+  this.approvedToLoad = newValue;
 }
 
 }
