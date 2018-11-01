@@ -17,27 +17,12 @@ export class PostCreateComponent implements OnInit {
   private mode = 'create';
   postId: string;
   private post;
-<<<<<<< HEAD
-=======
-  // <<-- NEW form input logic -->>
->>>>>>> 60f80ecfd32aed74437da2084871d9f9ceab9595
   form: FormGroup;
   imagePreview: string;
 
   constructor(private data: DataService, public route: ActivatedRoute) { }
 
   ngOnInit() {
-<<<<<<< HEAD
-    this.form = new FormGroup({
-      'name' : new FormControl(null, {validators: [Validators.required, 
-        Validators.minLength(3)]}),
-
-      'description' : new FormControl(null, {
-         
-        validators: [ Validators.required]
-      })
-    })
-=======
     // <<-- new form logic -->>
 
     this.form = new FormGroup({
@@ -52,7 +37,6 @@ export class PostCreateComponent implements OnInit {
 
 
     // << -- end of new from logic -->>
->>>>>>> 60f80ecfd32aed74437da2084871d9f9ceab9595
     this.route.paramMap.subscribe( (paramMap: ParamMap) => {
       if (paramMap.has('postId')) {
         this.mode = 'edit';
@@ -74,7 +58,6 @@ export class PostCreateComponent implements OnInit {
 
   if (whichForm === 1) {
 
-<<<<<<< HEAD
       this.data.addPost(this.name, this.description);
       // had getPost here() not idea as it requests a new list from back bend thru data with created posts.
 
@@ -85,11 +68,6 @@ export class PostCreateComponent implements OnInit {
 
     this.data.addPost(this.form.value.name, this.form.value.description);
   }
-=======
-      console.log("ye, we're fnn working!")
-    this.data.addPost(this.name, this.description);
-    // had getPost here() not idea as it requests a new list from back bend thru data with created posts.
->>>>>>> 5670fc2e4d27b34190d68a74c3906bc4f6052a61
 
 
   }
