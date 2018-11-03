@@ -46,6 +46,11 @@ It's "a way to access/read certain patterns in the file & its metadata to be abl
 Dont just want to check the extension, you want to 'infer' the file type while looking into the file"
 --> Says this is something that rarely needs to be done on our own, whatev, need to read the docs.
 
+-- Blob is a file object
+
+-- FormData() os an "obj" provided by JS. It's "basicly a data format which allows us to combine text
+format & blobs (file values)"
+
 Uploading Image:
 
 -- Connecting & passing data of input type = "file" to back end function:
@@ -88,3 +93,13 @@ mime-type validator (custom validator):
 
 -- async is similar with the only excepetion being an async return type (Observable/Promise)
 
+Server Side image uploads with Multer:
+
+-- Max installed multer, a livrary that allows extraction of files.
+
+-- Multer should be added to  POST route in backend folder. See, backend for added notes.
+
+-- Unlike front end, Multer automaticly gives you the mime-type.
+
+-- multer(storage).single('image') <-- middleware added to app.post () args?
+--> multer, configuration (saved under storage), & expecting single image.

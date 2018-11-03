@@ -20,6 +20,7 @@ export const mimeType = (control: AbstractControl): Promise<{[key: string]: any}
       // above defaults isValid to false, changes to true if file mime type found.
       for (let i = 0; i < arr.length; i++) {
         header += arr[i].toString(16); // converted to hexadecimal string.
+        // console.log('header in loop' + header);
       }
 
 // checking for patterns indicating(stand for) file type, png &
@@ -31,11 +32,11 @@ export const mimeType = (control: AbstractControl): Promise<{[key: string]: any}
         case '89504e47': // return default isValid = false;
           isValid = true;
           break;
-        case 'ff8dffe0':
-        case 'ff8dffe1':
-        case 'ff8dffe2':
-        case 'ff8dffe3':
-        case 'ff8dffe8':
+        case 'ffd8ffe0':
+        case 'ffd8ffe1':
+        case 'ffd8ffe2':
+        case 'ffd8ffe3':
+        case 'ffd8ffe8':
           isValid = true;
           break;
         default:

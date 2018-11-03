@@ -62,6 +62,7 @@ export class PostCreateComponent implements OnInit {
     if (this.form.invalid) {
       console.log('Form is invalid human, try harder.');
       return;
+    } else { console.log('Well done, form valid!');
     }
 
     if (whichForm === 1) {
@@ -72,7 +73,7 @@ export class PostCreateComponent implements OnInit {
         console.log(this.name + ' ' + this.description);
         this.name = '';
         this.description = '';
-    } else if (whichForm === 2 ) {
+    } else if ( whichForm === 2 ) {
 
       this.data.addPost(this.form.value.name, this.form.value.description);
     }

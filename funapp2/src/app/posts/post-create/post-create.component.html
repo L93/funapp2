@@ -51,7 +51,8 @@
     type = "submit">Save Post</button>
     <input type= "file" #filePicker2 (change) = "onImageUpload($event)">
 
-    <div class="image-preview" *ngIf = "imagePreview !== '' && imagePreview !== null && form.get('image').valid">
+    <div class="image-preview" *ngIf = "imagePreview !== '' && imagePreview !== null &&
+    form.get('image').valid">
     <!-- no different than typing *ngIf="imagePreview" in place of 2nd (null)-->
       <img [src]="imagePreview" [alt] = "form.value.name">
     </div>

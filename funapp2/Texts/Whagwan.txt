@@ -40,3 +40,6 @@ Problems:
 --> delete form.get('image').valid in *ngIf for hint.
 -- Study, everything inside mime-type.validator.ts.
 
+Solution*:
+-- Problem was in switch case. Had typos in case values. Fixed.
+* still need to dig into form validators.

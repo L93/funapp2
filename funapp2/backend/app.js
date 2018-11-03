@@ -12,6 +12,32 @@ const bodyParser = require ('body-parser');
 
 const app = express(); // express == chain of middle ware.. a "funnel" for data to go thru.
 
+const MIME_TYPE_MAP = {
+  'image/png' : 'png',
+  'image/jpeg' : 'jpg',
+  'image/jpg' : 'jpg',
+};
+const multer = require('multer'); // for file uploads (image in this case)
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+
+    // backend validation:
+    const isValid = MIME_TYPE_MAP[file.mimetype]
+    let error = new Error ('Invalid mime type');
+    if (isValid) {
+      error = null
+    }
+
+    cb(error, 'backend/images'); // cb expects 2 args (error, 'path to storage folder')
+    // reminder that this path is relative to server.js where app.js runs as an instance.
+  },
+  filename: (req, file, cb) => {
+    const name = file.originalname.toLowerCase().split(' ').join('-');
+    // extracting file name missed file ext, pay attention to following:
+    const ext = MIME_TYPE_MAP[file.mimetype]; // match file's mimetype to 1 in list. Assng val to 'ext.
+    cb(null, name + '-' + Date.now() + '.' + ext); // internal file name
+  },
+});
 
 // Terminal to connect to cloud db:
 //  Junandres-MacBook-Pro:funapp2 junandrepaul$ mongo "mongodb+srv://cluster0-lmoyq.mongodb.net/test" --username jojoDesktop
@@ -50,7 +76,7 @@ app.use((req, res, next) => {
 // });
 
 // <<-- Post New Item -->>
-app.post("/api/posts", (req, res, next) => {
+app.post("/api/posts", multer(storage).single('image').single, (req, res, next) => { // notes for multer.
   const post =
   new Post({
   id: req.body.id,

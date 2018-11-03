@@ -79,9 +79,19 @@ getPosts() {
 
 
 */
-addPost(nameReceived: string, descriptionReceived: string) {
+addPost(nameReceived: string, descriptionReceived: string, image: File) {
 
   const currentDate = new Date();
+
+  // new file upload format that allows blobs:
+
+  const postData = new FormData();
+  postData.append('name', nameReceived );
+  postData.append('description', descriptionReceived);
+  postData.append('image', image, name);
+
+
+  //
 
   const postToSend: PostInterface = {id: '', name: nameReceived, description: descriptionReceived,
   created: currentDate.toUTCString(), rating: 'Non yet!' };
@@ -131,13 +141,13 @@ onDelete(postId: string) {
 
 updatePost(postId: string, updatedName: string, updatedDescription: string,
   staticCreated: string, staticRating: string){
-  
+
   const updatedInfo = { id: postId, name: updatedName, description: updatedDescription };
   const updatedInfoWithStatic = { id: postId, name: updatedName, description: updatedDescription,
   created: staticCreated, rating: staticRating }
   const postURIForUpdate = this.postAPIURI + postId;
   this.http.put( postURIForUpdate, updatedInfoWithStatic ).subscribe( response => {
-  
+
   // <--- "immutable way of updating old post" :
     // Really important that you study whats happening here
     const updatedPosts = [...this.posts]; // <-- start update work w/ copied version
@@ -168,7 +178,7 @@ needToIndex(id: string){
 
 getPost(postId: string){
   console.log('id being received by getPost(): ' + postId);
-  let postItem; 
+  let postItem;
 
   return this.http.get<{id: string, name: string, description: string,  created: string, rating: string, }>(this.postAPIURI + postId)
   .subscribe(updatedPost => {
@@ -184,7 +194,7 @@ getPost(postId: string){
 }
 
 changeApprovedToLoad(newValue: boolean) {
-   
+
   this.approvedToLoad = newValue;
 }
 

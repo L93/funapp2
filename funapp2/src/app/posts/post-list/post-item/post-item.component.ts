@@ -64,7 +64,7 @@ constructor(private data: DataService, public route: ActivatedRoute) {
   this.asyncPostItemDescription = this.getDescriptionPromise();
 
   this.asyncPostItemCreated = this.getCreatedPromise();
-  this.asyncPostItemRating = this.getRatingPromise(); 
+  this.asyncPostItemRating = this.getRatingPromise();
 }
 
   ngOnInit() {
@@ -124,7 +124,7 @@ getIdPromise() {
 
 
 getNamePromise() {
-if (!this.newEdit){
+if (!this.newEdit) {
   return new Promise((resolve, reject ) => {
     setTimeout(() => resolve (this.name), 300);
   });
@@ -137,7 +137,7 @@ if (!this.newEdit){
 
 getDescriptionPromise() {
 
-  if (!this.newEdit){
+  if (!this.newEdit) {
     return new Promise((resolve, reject ) => {
       setTimeout(() => resolve (this.description), 300);
     });
@@ -167,7 +167,6 @@ onEdit() {
   this.editAreaNeeded = !this.editAreaNeeded;
   this.newName = this.postItem.name;
   this.newDescription = this.postItem.description;
-  
 }
 
 onDelete() {
@@ -176,31 +175,30 @@ onDelete() {
   // setTimeout( () => {this.data.getPosts(); }, 200);
 }
 
-onSaveEdit(){
+onSaveEdit() {
 
   this.progressBar = this.data.changeProcessBar(true);
 
   if (this.progressBar === true) {
     console.log('hi, process bar set to true');
-  };
+  }
 
   this.newEdit =  true;
   console.log('onSaveEdit() reached!');
   console.log('onEdit() clicked, newName: ' + this.newName
   + ' newDescription: ' + this.newDescription);
-  this.data.updatePost(this.postItem.id, this.newName, this.newDescription, 
+  this.data.updatePost(this.postItem.id, this.newName, this.newDescription,
     this.postItem.created, this.postItem.rating);
   console.log(' initial info sent to dataService : ');
   console.log(this.postItem);
-  this.data.getPost(this.postItem.id) // upDatedPost.content should be desc. Fix!
-    
+  this.data.getPost(this.postItem.id); // upDatedPost.content should be desc. Fix!
     console.log('updatedpost after getPost()!: ');
 
     console.log('updatedPost.description : ');
 
 
-    // this.asyncPostItem = updatedPost;     
-    this.asyncPostItemId = this.getIdPromise();    
+    // this.asyncPostItem = updatedPost;
+    this.asyncPostItemId = this.getIdPromise();
     this.asyncPostItemName = this.getNamePromise();
     this.asyncPostItemDescription = this.getDescriptionPromise();
     this.asyncPostItemCreated = this.getCreatedPromise();
@@ -210,6 +208,5 @@ onSaveEdit(){
     this.newEdit = false;
     this.progressBar = this.data.changeProcessBar(false);
   }
-  
 }
 
