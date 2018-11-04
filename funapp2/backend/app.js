@@ -10,7 +10,13 @@ const bodyParser = require ('body-parser');
 // A body parser needs to be added in order to process POST req.bodies:
 // "npm install --save body-parser"
 
+
 const app = express(); // express == chain of middle ware.. a "funnel" for data to go thru.
+
+// creating image path:
+const path = require('path'); // allows construction of paths "in a way thats safe on any OS (?)"
+app.use('/images', express.static(path.join('funapp2/funapp2/backend/images')));
+//
 
 const MIME_TYPE_MAP = {
   'image/png' : 'png',
@@ -25,17 +31,19 @@ const storage = multer.diskStorage({
     const isValid = MIME_TYPE_MAP[file.mimetype]
     let error = new Error ('Invalid mime type');
     if (isValid) {
-      error = null
+      error = null;
     }
 
-    cb(error, 'backend/images'); // cb expects 2 args (error, 'path to storage folder')
+    cb(error, 'funapp2/funapp2/backend/images'); // cb expects 2 args (error, 'path to storage folder')
     // reminder that this path is relative to server.js where app.js runs as an instance.
   },
   filename: (req, file, cb) => {
+    console.log('filename called!')
     const name = file.originalname.toLowerCase().split(' ').join('-');
     // extracting file name missed file ext, pay attention to following:
     const ext = MIME_TYPE_MAP[file.mimetype]; // match file's mimetype to 1 in list. Assng val to 'ext.
-    cb(null, name + '-' + Date.now() + '.' + ext); // internal file name
+    cb (null, name + '-' + Date.now() + '.' + ext);
+    console.log(name + ext); // internal file name
   },
 });
 
@@ -76,18 +84,22 @@ app.use((req, res, next) => {
 // });
 
 // <<-- Post New Item -->>
-app.post("/api/posts", multer(storage).single('image').single, (req, res, next) => { // notes for multer.
+app.post("/api/posts", multer({storage: storage}).single('image'), (req, res, next) => { // notes for multer.
+
+  // protocol property which returns "whether we're accessing server with http or https"
+  const url = req.protocol + '://' + req.get('host'); // <-- constructs url for server(?)
   const post =
   new Post({
   id: req.body.id,
   name: req.body.name,
   description: req.body.description,
   created: req.body.created,
-  rating: req.body.rating
+  rating: req.body.rating,
+  imagePath: url + '/images/' + req.file.filename // file property by multer
 
   });
 
-  post.save().then(createdPost => {
+  post.save().then(createdPost => { // WTF does .save() do again? Mongoose propert, review!
 
   console.log('from back end w/ Post model: ' + post);
 

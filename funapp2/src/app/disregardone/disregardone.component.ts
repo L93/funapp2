@@ -21,25 +21,24 @@ export class DisregardoneComponent implements OnInit {
 
   }
 
-  
-  onClick() {
-      
-      
-      const clickData: PostInterface = {
-        id: '',
-        name: this.name,
-        description: this.description,
-        created: 'CreatedByUser',
-        rating: 'RatingByUser',
-      };
 
-      console.log('create tab info: ' + JSON.stringify(clickData));
-    this.data.addPost(this.name, this.description);
-    // had getPost here() not idea as it requests a new list from back bend thru data with created posts.
+  // onClick() { // following has no use case:
+  //     const clickData: PostInterface = {
+  //       id: '',
+  //       name: this.name,
+  //       description: this.description,
+  //       created: 'CreatedByUser',
+  //       rating: 'RatingByUser',
+  //     };
 
-    console.log(this.name + ' ' + this.description);
-    this.name = '';
-    this.description = '';
-  }
+  //     console.log('create tab info: ' + JSON.stringify(clickData));
+  //   this.data.addPost(this.name, this.description,
+  //     this.form.value.image);
+  //   // had getPost here() not ideal as it requests a new list from back bend thru data with created posts.
+
+  //   console.log(this.name + ' ' + this.description);
+  //   this.name = '';
+  //   this.description = '';
+  // }
 
 }

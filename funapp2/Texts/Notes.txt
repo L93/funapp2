@@ -51,6 +51,8 @@ Dont just want to check the extension, you want to 'infer' the file type while l
 -- FormData() os an "obj" provided by JS. It's "basicly a data format which allows us to combine text
 format & blobs (file values)"
 
+-- Angular files are inaccessible by default, you allow public access through routing
+
 Uploading Image:
 
 -- Connecting & passing data of input type = "file" to back end function:

@@ -40,6 +40,7 @@ getPosts () {
         description: post.description,
         created: post.created,
         rating: post.rating,
+        imagePath: post.imagePath
       };
     });
   }))
@@ -82,27 +83,33 @@ getPosts() {
 addPost(nameReceived: string, descriptionReceived: string, image: File) {
 
   const currentDate = new Date();
-
   // new file upload format that allows blobs:
 
   const postData = new FormData();
+  postData.append('id', '');
   postData.append('name', nameReceived );
   postData.append('description', descriptionReceived);
+  postData.append('created', currentDate.toDateString());
+  postData.append('rating', 'Non yet!');
   postData.append('image', image, name);
-
+  console.log('image being sent back'); console.log(image); // name will be part of filename when saved in BE.
 
   //
 
+  // old upload format, left here to update local array:
   const postToSend: PostInterface = {id: '', name: nameReceived, description: descriptionReceived,
-  created: currentDate.toUTCString(), rating: 'Non yet!' };
+  created: currentDate.toUTCString(), rating: 'Non yet!', imagePath: null };
 
 
   // <-- IMPORTANT-->
-  // This updates local list while only requesting backend's
+  // This updates local list while only getting backend's
   // id thru its res. Pushes to list array w/o calling
   // getPost() which would go thru the lenghtly process
-  // of chatting w/ midware for backend query.
-  this.http.post<{message: any, postId: string}>(this.postAPIURI, postToSend).subscribe( (responseDataPost) => {
+  // of chatting w/ BE for db query.
+
+  // new note: post req is no longer sending JSON data, angular auto readjusts to type. Just make sure
+  // headers in backend are appropriate:
+  this.http.post<{message: any, postId: string}>(this.postAPIURI, postData).subscribe( (responseDataPost) => {
     const id = responseDataPost.postId;
     postToSend.id = id;
     this.posts.push(postToSend);
@@ -126,7 +133,7 @@ onDelete(postId: string) {
   console.log('URI for delete: ' + postURIForDelete);
   this.http.delete<{message: string, id: string}>(postURIForDelete) // passed condensed to remove quotation marks.
   .subscribe( () => {
-    const updatedPosts = this.posts.filter(post => post.id
+    const updatedPosts = this.posts.filter(postToFilter => postToFilter.id
       !== postId);
       // updates list locally by filtering out while back
       // end deletes from its own array.
@@ -140,11 +147,11 @@ onDelete(postId: string) {
 }
 
 updatePost(postId: string, updatedName: string, updatedDescription: string,
-  staticCreated: string, staticRating: string){
+  staticCreated: string, staticRating: string) {
 
   const updatedInfo = { id: postId, name: updatedName, description: updatedDescription };
   const updatedInfoWithStatic = { id: postId, name: updatedName, description: updatedDescription,
-  created: staticCreated, rating: staticRating }
+  created: staticCreated, rating: staticRating };
   const postURIForUpdate = this.postAPIURI + postId;
   this.http.put( postURIForUpdate, updatedInfoWithStatic ).subscribe( response => {
 
@@ -153,16 +160,16 @@ updatePost(postId: string, updatedName: string, updatedDescription: string,
     const updatedPosts = [...this.posts]; // <-- start update work w/ copied version
     const oldPostIndex = updatedPosts.findIndex(p => p.id === updatedInfo.id);
     updatedPosts[oldPostIndex] = {id: updatedInfo.id, name: updatedName, description: updatedDescription,
-    created: staticCreated, rating: staticRating};
+    created: staticCreated, rating: staticRating, imagePath: null ] }; // update imagePath later
     console.log('Description : ' + updatedDescription );
     this.posts = updatedPosts; // <-- finish by assigning copied to main list.
-    console.log('Response from backend: ')
+    console.log('Response from backend: ');
     console.log(response);
-    console.log(this.posts)
+    console.log(this.posts);
 
   // ---->
   }
-  )
+  );
   console.log('id from postItem: ' + postId);
 
 
@@ -170,8 +177,8 @@ updatePost(postId: string, updatedName: string, updatedDescription: string,
     // return {...this.posts.find(posts => posts.id === id)};  // related to post edit, treturns post that matches id.
 }
 
-needToIndex(id: string){
-  const copiedPosts = [...this.posts]
+needToIndex(id: string) {
+  const copiedPosts = [...this.posts];
   const foundItem = copiedPosts.findIndex(p => id === id);
   console.log(foundItem);
 }

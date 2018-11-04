@@ -67,7 +67,8 @@ export class PostCreateComponent implements OnInit {
 
     if (whichForm === 1) {
 
-        this.data.addPost(this.name, this.description);
+        this.data.addPost(this.name, this.description,
+          this.form.value.image);
         // had getPost here() not idea as it requests a new list from back bend thru data with created posts.
 
         console.log(this.name + ' ' + this.description);
@@ -75,7 +76,8 @@ export class PostCreateComponent implements OnInit {
         this.description = '';
     } else if ( whichForm === 2 ) {
 
-      this.data.addPost(this.form.value.name, this.form.value.description);
+      this.data.addPost(this.form.value.name, this.form.value.description,
+      this.form.value.image);
     }
 
 

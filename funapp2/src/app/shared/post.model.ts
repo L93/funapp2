@@ -4,6 +4,7 @@ export interface PostInterface {
     description: string;
     created: string;
     rating: string;
+    imagePath: string;
 }
 
 // why does interface use ';' instead of ',' for its key: value
